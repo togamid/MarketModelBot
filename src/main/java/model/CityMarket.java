@@ -3,17 +3,21 @@ package model;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CityMarket {
-    private Product[] products;
-    private String name;
+    private final Product[] products;
+    private final String name;
+    private final ConcurrentHashMap<String, Product> productsMap = new ConcurrentHashMap<>();
 
     public CityMarket(Product[] products, String name){
         this.products = products;
         this.name = name;
+        for (Product product: products ){
+            productsMap.putIfAbsent(product.getName(), product);
+        }
     }
 
     public String getName(){
@@ -28,6 +32,11 @@ public class CityMarket {
             list += "\n";
         }
         return list;
+    }
+
+    public double getPriceofProduct(String productName){
+        Product product = productsMap.get(productName);
+        return product.getPriceAtStock(product.getCurrentStock());
     }
 
 
@@ -54,12 +63,14 @@ public class CityMarket {
                 }
 
                 String name = values[0];
-                int production = Integer.parseInt(values[1]);
-                int consumption = Integer.parseInt(values[2]);
-                int maxStock = Integer.parseInt(values[3]);
-                int minPrice = Integer.parseInt(values[4]);
-                int currStock = Integer.parseInt(values[5]);
-                products.add(new Product(name, production, consumption, maxStock, minPrice, currStock));
+                int production = Integer.parseInt(values[1].trim());
+                int consumption = Integer.parseInt(values[2].trim());
+                int maxStock = Integer.parseInt(values[3].trim());
+                int minPrice = Integer.parseInt(values[4].trim());
+                int priceVolatility = Integer.parseInt(values[5].trim());
+                int currStock = Integer.parseInt(values[6].trim());
+                 System.out.println(currStock);
+                products.add(new Product(name, production, consumption, maxStock, minPrice, priceVolatility,currStock));
 
                 line = reader.readLine();
              }

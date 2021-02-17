@@ -5,11 +5,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Ping implements ICommand{
 
-    private String command = "ping";
+    private final String command = "ping";
     @Override
     public String run(String args, MessageReceivedEvent event) {
 
-        return CityMarket.loadCityMarket("/home/tobias/Desktop/temp.txt", true).getProductList();
+        return ""  + CityMarket.loadCityMarket("/home/tobias/Desktop/temp.txt", true).getPriceofProduct(args);
     }
 
     @Override
