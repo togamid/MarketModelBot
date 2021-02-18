@@ -32,6 +32,17 @@ public class Product {
     public int getCurrentStock(){
         return currentStock;
     }
+
+    public void setCurrentStock(int newStock){
+        if(newStock > maxStock){
+            System.out.println("Error: NewStock " + newStock + " bigger than maxStock " + maxStock + " for Product "+ name);
+        } else if(newStock < 0) {
+            System.out.println("Error: NewStock " + newStock + " less than zero for Product "+ name);
+        } else {
+            currentStock = newStock;
+        }
+    }
+
     public double getPriceAtStock(int stock){
 
         double tmpConsum = 0.2;
@@ -47,7 +58,6 @@ public class Product {
         double xAxisStretching = (tmpProduct/tmpConsum)* 16.0/(maxStock); //if there is more production than consumption, squash the graph on the x-Axis. Use maxStock to calibrate for the expected amount
         double yAxisStretching = priceVolatilityFactor; //scale the price increase with the priceDevelopmentFactor
         return (yAxisStretching/(stock*xAxisStretching + 0.5)) + minPrice;
-
     }
 
 

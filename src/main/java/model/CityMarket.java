@@ -11,6 +11,7 @@ public class CityMarket {
     private final Product[] products;
     private final String name;
     private final ConcurrentHashMap<String, Product> productsMap = new ConcurrentHashMap<>();
+    private final double NpcTraderMargin = 1.1;
 
     public CityMarket(Product[] products, String name){
         this.products = products;
@@ -34,9 +35,41 @@ public class CityMarket {
         return list;
     }
 
-    public double getPriceofProduct(String productName){
+
+    public double getPriceCurrentofProduct(String productName){
         Product product = productsMap.get(productName);
         return product.getPriceAtStock(product.getCurrentStock());
+    }
+
+
+    public double getSellPrice(String productName, int amount){
+        Product product = productsMap.get(productName);
+        double sum = 0;
+        if(amount <0 ){
+            System.out.println("Error: Amount to Sell may not be negative!");
+            return 0.0;
+        }
+
+        for(int i = 1; i<=amount; i++){ //start with one, as the NPC merchant buys at the price where they can sell it at
+            sum += product.getPriceAtStock(product.getCurrentStock()+i);
+        }
+        return sum;
+
+    }
+
+    public double getBuyPrice(String productName, int amount){
+        Product product = productsMap.get(productName);
+        double sum = 0;
+        if(amount <0 ){
+            System.out.println("Error: Amount to buy may not be negative!");
+            return 0.0;
+        }
+
+        for(int i = 0; i<amount; i++){
+            sum += product.getPriceAtStock(product.getCurrentStock()-i);
+        }
+        return sum*NpcTraderMargin;
+
     }
 
 
@@ -69,7 +102,6 @@ public class CityMarket {
                 int minPrice = Integer.parseInt(values[4].trim());
                 int priceVolatility = Integer.parseInt(values[5].trim());
                 int currStock = Integer.parseInt(values[6].trim());
-                 System.out.println(currStock);
                 products.add(new Product(name, production, consumption, maxStock, minPrice, priceVolatility,currStock));
 
                 line = reader.readLine();
