@@ -19,4 +19,10 @@ public class Model {
         return cities.values().toArray(new CityMarket[0]);
     }
 
+    public void advanceDay(){
+        for (CityMarket market: getAllMarkets()) {
+            market.advanceDay();
+        }
+    }
+
 }

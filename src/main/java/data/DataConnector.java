@@ -50,7 +50,7 @@ public class DataConnector {
                 int production = Integer.parseInt(values[1].trim());
                 int consumption = Integer.parseInt(values[2].trim());
                 int maxStock = Integer.parseInt(values[3].trim());
-                int minPrice = Integer.parseInt(values[4].trim());
+                double minPrice = Double.parseDouble(values[4].trim());
                 int priceVolatility = Integer.parseInt(values[5].trim());
                 int currStock = Integer.parseInt(values[6].trim());
                 products.add(new Product(name, production, consumption, maxStock, minPrice, priceVolatility,currStock));

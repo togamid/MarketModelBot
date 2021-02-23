@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 
 public class EventListeners extends ListenerAdapter {
-    private final String botSignifier = "!";
+    //public final String botSignifier = "!";
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String msgContent = event.getMessage().getContentRaw();
@@ -21,16 +21,16 @@ public class EventListeners extends ListenerAdapter {
             mention = event.getAuthor().getAsMention();
         }
 
-        if(!event.getAuthor().isBot() && (event.getChannel().getName().equals("bot-commands") || event.isFromType(ChannelType.PRIVATE)) && msgContent.startsWith(botSignifier)){
+        if(!event.getAuthor().isBot() && (event.getChannel().getName().equals("bot-commands") || event.isFromType(ChannelType.PRIVATE)) && msgContent.startsWith(Bot.botSignifier)){
             String command;
             String[] args;
             int posSpace = msgContent.indexOf(' ');
             if(posSpace != -1 && posSpace+1 < msgContent.length()) {
-                command = msgContent.substring(botSignifier.length(), posSpace);
+                command = msgContent.substring(Bot.botSignifier.length(), posSpace);
                 args = msgContent.substring(posSpace+1).split(" ");
             }
             else {
-                command = msgContent.substring(botSignifier.length());
+                command = msgContent.substring(Bot.botSignifier.length());
                 args= new String[0];
             }
 

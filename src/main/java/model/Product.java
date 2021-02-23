@@ -15,7 +15,7 @@ public class Product {
 
 
 
-    public Product(String name, int production, int consumption, int maxStock, int minPrice, int priceVolatilityFactor, int currentStock){
+    public Product(String name, int production, int consumption, int maxStock, double minPrice, int priceVolatilityFactor, int currentStock){
         this.name = name;
         this.production = production;
         this.consumption = consumption;
@@ -79,5 +79,16 @@ public class Product {
 
     public String toString(){
         return name;
+    }
+
+    public void advanceDay(){
+        currentStock += production;
+        currentStock -= consumption;
+        if(currentStock > maxStock){
+            currentStock = maxStock;
+        }
+        else if(currentStock <0) {
+            currentStock = 0;
+        }
     }
 }

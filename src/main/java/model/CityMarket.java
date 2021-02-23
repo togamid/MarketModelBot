@@ -83,4 +83,10 @@ public class CityMarket {
 
     }
 
+    public void advanceDay(){
+        for (Product product: getAllProducts()) {
+            product.advanceDay();
+        }
+    }
+
 }
