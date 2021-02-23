@@ -3,12 +3,10 @@ package frontend;
 import frontend.commands.ICommand;
 import model.Transaction;
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.events.emote.EmoteAddedEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-import static frontend.Bot.jda;
 
 public class EventListeners extends ListenerAdapter {
     private final String botSignifier = "!";
@@ -23,19 +21,18 @@ public class EventListeners extends ListenerAdapter {
         } else {
             mention = event.getAuthor().getAsMention();
         }
-        System.out.println(event.getChannel().getName());
 
         if(!event.getAuthor().isBot() && (event.getChannel().getName().equals("bot-commands") || event.isFromType(ChannelType.PRIVATE)) && msgContent.startsWith(botSignifier)){
             String command;
-            String args;
+            String[] args;
             int posSpace = msgContent.indexOf(' ');
             if(posSpace != -1 && posSpace+1 < msgContent.length()) {
                 command = msgContent.substring(botSignifier.length(), posSpace);
-                args = msgContent.substring(posSpace+1);
+                args = msgContent.substring(posSpace+1).split(" ");
             }
             else {
                 command = msgContent.substring(botSignifier.length());
-                args="";
+                args= new String[0];
             }
 
             ICommand commandObj = Bot.commands.get(command);
@@ -59,7 +56,7 @@ public class EventListeners extends ListenerAdapter {
                     transaction.message.addReaction("U+2705").queue();
                 } else {
                     transaction.message.addReaction("U+274E").queue();
-                    event.getChannel().sendMessage(event.getUser().getAsMention()+ " the transaction could not be processed. Please try again!").queue();
+                    event.getChannel().sendMessage(event.getUser().getAsMention()+ " the transaction could not be processed. Please try again!").queue(); //TODO: might not work in private Chat
                 }
                 Bot.pendingTransactions.remove(event.getMessageId());
             } else if(reaction.equalsIgnoreCase("U+1F44E")){

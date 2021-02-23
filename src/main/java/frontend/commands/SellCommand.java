@@ -2,34 +2,32 @@ package frontend.commands;
 
 import frontend.Bot;
 import model.Transaction;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 
-
-public class BuyCommand implements ICommand {
-    private final String command = "buy";
+public class SellCommand implements ICommand{
+    private final String command = "sell";
     private Transaction transaction = null;
-
 
 
     @Override
     public String run(String[] args, MessageReceivedEvent event) {
         int amount = 0;
         if(args.length != 3){
-            return "Not the right amount of args. Usage: buy <city> <product> <amount>";
+            return "Not the right amount of args. Usage: sell <city> <product> <amount>";
         }
         try{
             amount = Integer.parseInt(args[2]);
         } catch (NumberFormatException e){
             return "The amount has to be an integer number";
         }
-        double price = Bot.market.getBuyPrice(args[1], amount); //TODO: adjust for multiple markets
+        double price = Bot.market.getSellPrice(args[1], amount); //TODO: adjust for multiple markets
         if(price == 0.0){
             return "There was an error. Please check if this product is available in this city."; //TODO: make custom errors for "product not found" etc, so the error message is more specific
         } else {
-            transaction = new Transaction(Bot.market, Bot.market.getProduct(args[1]), amount * (-1) ); //TODO: adjust for multiple markets
-            return "Do you really want to buy " + amount + " " + args[1] + " for "+String.format("%,.2f", price) + " GP in "+ args[0] + "?"; //TODO: make currency variable, format price
+            transaction = new Transaction(Bot.market, Bot.market.getProduct(args[1]), amount); //TODO: adjust for multiple markets
+            return "Do you really want to sell " + amount + " " + args[1] + " for "+String.format("%,.2f", price) + " GP in "+ args[0] + "?"; //TODO: make currency variable, format price
         }
 
     }
@@ -48,7 +46,7 @@ public class BuyCommand implements ICommand {
 
     @Override
     public String getShortDesc() {
-        return "Buy an amount of a product from a city. Usage: buy <city> <product> <amount>";
+        return "Sell an amount of a product from a city. Usage: buy <city> <product> <amount>";
     }
 
     @Override

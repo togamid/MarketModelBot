@@ -48,9 +48,17 @@ public class CityMarket {
 
     public double getSellPrice(String productName, int amount){
         Product product = productsMap.get(productName);
+        if(product == null){
+            System.out.println("Error: Product "+ productName + "not found in Market "+ this.name);
+            return 0.0;
+        }
         double sum = 0;
         if(amount <0 ){
             System.out.println("Error: Amount to Sell may not be negative!");
+            return 0.0;
+        }
+        if(product.getCurrentStock() + amount > product.getMaxStock()){
+            System.out.println("Error: Not enough storage space available!");
             return 0.0;
         }
 
@@ -60,9 +68,6 @@ public class CityMarket {
         return sum;
 
     }
-    ///returns the amount one has to pay to buy the specified amount of the specified good.
-    ///if there is an Error, it returns 0.0
-
     /**
      *
      * @param productName the name of the product to buy
@@ -84,7 +89,6 @@ public class CityMarket {
             System.out.println("Error: Not enough available!");
             return 0.0;
         }
-
         for(int i = 0; i<amount; i++){
             sum += product.getPriceAtStock(product.getCurrentStock()-i);
         }

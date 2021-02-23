@@ -33,6 +33,10 @@ public class Product {
         return currentStock;
     }
 
+    public int getMaxStock() {
+        return maxStock;
+    }
+
     public boolean processTransaction(Transaction trans){
         int newStock = currentStock + trans.amount;
         if(newStock < 0 || newStock > maxStock) {
