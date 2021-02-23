@@ -4,11 +4,11 @@ package model;
 
 public class Product {
     public static final int numberProperties = 7;
-    private final String name;
-    private final int production; //how much is produced each day
-    private final int consumption; //how much is consumed each day
-    private final double minPrice; //the minimum price possible. Is approached asymptotically
-    private final int priceVolatilityFactor; //this defines how much the price increases if the stock decreases
+    public final String name;
+    public final int production; //how much is produced each day
+    public final int consumption; //how much is consumed each day
+    public final double minPrice; //the minimum price possible. Is approached asymptotically
+    public final int priceVolatilityFactor; //this defines how much the price increases if the stock decreases
     private int currentStock;
     private final int maxStock; //the maximum amount the city can store of this good. Also used to scale the price-development to the expected quantity
 

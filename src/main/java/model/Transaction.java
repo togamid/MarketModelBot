@@ -1,5 +1,6 @@
 package model;
 
+import frontend.Bot;
 import net.dv8tion.jda.api.entities.Message;
 
 import java.time.LocalDateTime;
@@ -20,5 +21,29 @@ public class Transaction {
 
     public boolean process(){
         return product.processTransaction(this);
+    }
+
+    public static String checkTransactionData(String cityName, String productName, String amountString){
+        CityMarket market = Bot.model.getMarket(cityName);
+        if(market == null){
+            return "City " + cityName + " not found!";
+        }
+        Product product = market.getProduct(productName);
+        if(product == null){
+            return "Product " + productName + " in city " + cityName + " not found!";
+        }
+
+        int amount = 0;
+        try{
+            amount = Integer.parseInt(amountString);
+        } catch (NumberFormatException e){
+            return "The amount has to be an integer number";
+        }
+
+        if(amount < 0){
+            return "The amount may not be negative. Please use buy/sell";
+        }
+
+        return "Ok";
     }
 }

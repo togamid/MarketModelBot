@@ -12,7 +12,6 @@ public class EventListeners extends ListenerAdapter {
     private final String botSignifier = "!";
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        System.out.println("test2");
         String msgContent = event.getMessage().getContentRaw();
         String mention;
         if(event.getMember() != null){
