@@ -28,7 +28,7 @@ public class SellCommand implements ICommand{
             return "There was an error. Please check if this product is available in this city."; //TODO: make custom errors for "product not found" etc, so the error message is more specific
         } else {
             transaction = new Transaction(market, market.getProduct(args[1]), amount);
-            return "Do you really want to sell " + amount + " " + args[1] + " for "+String.format("%,.2f", price) + " GP in "+ args[0] + "?"; //TODO: make currency variable, format price
+            return "Do you really want to sell " + amount + " " + args[1] + " for "+String.format("%,.2f", price) + " GP in "+ args[0] + "?"; //TODO: make currency variable
         }
 
     }

@@ -49,7 +49,6 @@ public class EventListeners extends ListenerAdapter {
         String reaction = event.getReaction().getReactionEmote().getAsCodepoints();
         Transaction transaction = Bot.pendingTransactions.get(event.getMessageId()); //TODO: This can be more performant if the lookup is after checking the emoji
         if(transaction != null && event.getUserIdLong() == transaction.message.getMentionedUsers().get(0).getIdLong()) {
-            System.out.println(reaction);
             if(reaction.equalsIgnoreCase("U+1F44D")){
                 if(transaction.process()){
                     transaction.message.addReaction("U+2705").queue();

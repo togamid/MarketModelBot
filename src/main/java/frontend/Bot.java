@@ -22,13 +22,12 @@ public class Bot {
     public static Model model;
     public static ConcurrentHashMap<String, Transaction> pendingTransactions = new ConcurrentHashMap<>();
     public static DataConnector dataConnector;
-    public static final String botSignifier = "!";
+    public static final Config config = new Config("config.txt");
+    public static final String botSignifier = config.get("BotSignifier");
 
     public void init(){
-        /* Config config = new Config();
-        config.loadConfig("config.txt");*/
         try {
-            jda = JDABuilder.createDefault("Token")
+            jda = JDABuilder.createDefault(config.get("Token"))
                     .addEventListeners(new EventListeners())
                     .build();
             jda.awaitReady();
@@ -36,7 +35,7 @@ public class Bot {
         catch (Exception e){
            System.out.println(e.getMessage());
         }
-        dataConnector = new DataConnector("/home/sibylle/Schreibtisch", new String[] {"temp"}); //TODO: load path dynamicly
+        dataConnector = new DataConnector(config.get("Path"), config.getCities());
         model = dataConnector.loadModel();
 
         for (ICommand command : commandArray) {
@@ -45,7 +44,9 @@ public class Bot {
         }
 
         final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(TimeThread::run, 0, 10, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(TimeThread::run, 0, Integer.parseInt( config.get("SecondsPerDay")), TimeUnit.SECONDS);
+
+        //TODO: autosafe every hour/10 minutes
 
 
     }
