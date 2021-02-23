@@ -33,6 +33,18 @@ public class Product {
         return currentStock;
     }
 
+    public boolean processTransaction(Transaction trans){
+        int newStock = currentStock + trans.amount;
+        if(newStock < 0 || newStock > maxStock) {
+            return false;
+        }
+        else {
+            currentStock = currentStock + trans.amount;
+            return true;
+        }
+
+    }
+
     public void setCurrentStock(int newStock){
         if(newStock > maxStock){
             System.out.println("Error: NewStock " + newStock + " bigger than maxStock " + maxStock + " for Product "+ name);

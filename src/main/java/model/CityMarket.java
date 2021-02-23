@@ -35,8 +35,12 @@ public class CityMarket {
         return list;
     }
 
+    public Product getProduct(String name){
+        return productsMap.get(name);
+    }
 
-    public double getPriceCurrentofProduct(String productName){
+
+    public double getCurrentPriceOfProduct(String productName){
         Product product = productsMap.get(productName);
         return product.getPriceAtStock(product.getCurrentStock());
     }
@@ -56,12 +60,28 @@ public class CityMarket {
         return sum;
 
     }
+    ///returns the amount one has to pay to buy the specified amount of the specified good.
+    ///if there is an Error, it returns 0.0
 
+    /**
+     *
+     * @param productName the name of the product to buy
+     * @param amount the amount to buy
+     * @return the price for the transaction or 0.0 if there is an error
+     */
     public double getBuyPrice(String productName, int amount){
         Product product = productsMap.get(productName);
+        if(product == null){
+            System.out.println("Error: Product "+ productName + "not found in Market "+ this.name);
+            return 0.0;
+        }
         double sum = 0;
         if(amount <0 ){
             System.out.println("Error: Amount to buy may not be negative!");
+            return 0.0;
+        }
+        if(product.getCurrentStock() - amount < 0){
+            System.out.println("Error: Not enough available!");
             return 0.0;
         }
 

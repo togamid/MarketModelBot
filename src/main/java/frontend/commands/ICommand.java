@@ -1,5 +1,6 @@
 package frontend.commands;
 
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public interface ICommand {
@@ -8,4 +9,5 @@ public interface ICommand {
     String getLongDesc();
     String getCommand();
     void init();
+    void callback(Message m);
 }

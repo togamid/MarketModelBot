@@ -1,6 +1,7 @@
 package frontend.commands;
 
 import model.CityMarket;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Ping implements ICommand{
@@ -32,6 +33,10 @@ public class Ping implements ICommand{
 
     @Override
     public void init() {
+
+    }
+    @Override
+    public void callback(Message m){
 
     }
 }

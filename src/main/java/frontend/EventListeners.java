@@ -1,9 +1,14 @@
 package frontend;
 
 import frontend.commands.ICommand;
+import model.Transaction;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.events.emote.EmoteAddedEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import static frontend.Bot.jda;
 
 public class EventListeners extends ListenerAdapter {
     private final String botSignifier = "!";
@@ -18,8 +23,9 @@ public class EventListeners extends ListenerAdapter {
         } else {
             mention = event.getAuthor().getAsMention();
         }
+        System.out.println(event.getChannel().getName());
 
-        if(!event.getAuthor().isBot() && (event.getChannel().getName().equals("bot-frontend.commands") || event.isFromType(ChannelType.PRIVATE)) && msgContent.startsWith(botSignifier)){
+        if(!event.getAuthor().isBot() && (event.getChannel().getName().equals("bot-commands") || event.isFromType(ChannelType.PRIVATE)) && msgContent.startsWith(botSignifier)){
             String command;
             String args;
             int posSpace = msgContent.indexOf(' ');
@@ -36,8 +42,31 @@ public class EventListeners extends ListenerAdapter {
 
 
             if(commandObj != null){
-                event.getChannel().sendMessage(mention +" "+  commandObj.run(args, event)).queue();
+                event.getChannel().sendMessage(mention +" "+  commandObj.run(args, event)).queue(m -> commandObj.callback(m));
+            } else {
+                System.out.println("Warning: command " + command + " not found!");
             }
+        }
+    }
+    @Override
+    public void onMessageReactionAdd(MessageReactionAddEvent event){
+        String reaction = event.getReaction().getReactionEmote().getAsCodepoints();
+        Transaction transaction = Bot.pendingTransactions.get(event.getMessageId()); //TODO: This can be more performant if the lookup is after checking the emoji
+        if(transaction != null && event.getUserIdLong() == transaction.message.getMentionedUsers().get(0).getIdLong()) {
+            System.out.println(reaction);
+            if(reaction.equalsIgnoreCase("U+1F44D")){
+                if(transaction.process()){
+                    transaction.message.addReaction("U+2705").queue();
+                } else {
+                    transaction.message.addReaction("U+274E").queue();
+                    event.getChannel().sendMessage(event.getUser().getAsMention()+ " the transaction could not be processed. Please try again!").queue();
+                }
+                Bot.pendingTransactions.remove(event.getMessageId());
+            } else if(reaction.equalsIgnoreCase("U+1F44E")){
+                transaction.message.addReaction("U+274E").queue();
+                Bot.pendingTransactions.remove(event.getMessageId());
+            }
+
         }
     }
 }
