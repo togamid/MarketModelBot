@@ -2,6 +2,7 @@ package frontend.commands;
 
 import frontend.Bot;
 import model.CityMarket;
+import model.DndPrice;
 import model.Product;
 import model.Transaction;
 import net.dv8tion.jda.api.entities.Message;
@@ -44,7 +45,7 @@ public class SellCommand implements ICommand{
         }
 
         transaction = new Transaction(market, product, amount);
-        return "Do you really want to sell " + amount + " " + args[1] + " for "+String.format("%,.2f", price) + " " + Bot.config.get("Currency") +" in "+ args[0] + "?";
+        return "Do you really want to sell " + amount + " " + args[1] + " for "+ DndPrice.getPrice(price) +" in "+ args[0] + "?";
     }
 
     @Override

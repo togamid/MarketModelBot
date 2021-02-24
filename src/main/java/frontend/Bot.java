@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class Bot {
     public static JDA jda;
     public static HashMap<String, ICommand> commands = new HashMap<>();
-    private static final ICommand[] commandArray = {new Ping(), new BuyCommand(), new SellCommand(), new SafeCommand(), new HelpCommand()};
+    private static final ICommand[] commandArray = {new Ping(),new ListCommand(), new BuyCommand(), new SellCommand(), new SafeCommand(), new HelpCommand()};
     public static Model model;
     public static ConcurrentHashMap<String, Transaction> pendingTransactions = new ConcurrentHashMap<>();
     public static DataConnector dataConnector;
@@ -50,8 +50,5 @@ public class Bot {
 
         final ScheduledExecutorService autosafeService = Executors.newSingleThreadScheduledExecutor();
         autosafeService.scheduleAtFixedRate(AutosafeThread::run, 10, Integer.parseInt( config.get("AutosafeTime(Minutes)")), TimeUnit.MINUTES);
-
-        //TODO: prices in GP, SP, CP -> as Int in CP
-        //TODO: list command that lists products in a city
     }
 }

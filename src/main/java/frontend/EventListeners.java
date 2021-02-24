@@ -53,7 +53,7 @@ public class EventListeners extends ListenerAdapter {
                     transaction.message.addReaction("U+2705").queue();
                 } else {
                     transaction.message.addReaction("U+274E").queue();
-                    event.getChannel().sendMessage(event.getUser().getAsMention()+ " the transaction could not be processed. Please try again!").queue(); //TODO: might not work in private Chat
+                    event.getChannel().sendMessage(event.getUser().getAsMention()+ " the transaction could not be processed. Please try again!").queue();
                 }
                 Bot.pendingTransactions.remove(event.getMessageId());
             } else if(reaction.equalsIgnoreCase("U+1F44E")){
