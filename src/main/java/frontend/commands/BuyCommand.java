@@ -2,6 +2,7 @@ package frontend.commands;
 
 import frontend.Bot;
 import model.CityMarket;
+import model.Product;
 import model.Transaction;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,23 +18,36 @@ public class BuyCommand implements ICommand {
     @Override
     public String run(String[] args, MessageReceivedEvent event) {
 
+        int amount;
+        double price;
         if(args.length != 3){
             return "Not the right amount of args. Usage: buy <city> <product> <amount>";
         }
-        String checkTransactionResult = Transaction.checkTransactionData(args[0], args[1], args[2]);
-        if(!checkTransactionResult.equalsIgnoreCase("Ok")){
-            return checkTransactionResult;
-        }
-        int amount = Integer.parseInt(args[2]);
         CityMarket market = Bot.model.getMarket(args[0]);
-        double price = market.getBuyPrice(args[1], amount); //TODO: it would be prettier if the product calculates the price
-        if(price == 0.0){
-            return "There was an error. Please check if this product is available in this city."; //TODO: make custom errors for "product not found" etc, so the error message is more specific
-        } else {
-            transaction = new Transaction(market, market.getProduct(args[1]), amount * (-1) );
-            return "Do you really want to buy " + amount + " " + args[1] + " for "+String.format("%,.2f", price) + " GP in "+ args[0] + "?"; //TODO: make currency variable, format price
+        if(market == null){
+            return "City " + args[0] + " not found!";
+        }
+        Product product = market.getProduct(args[1]);
+        if(product == null){
+            return "Product " + args[1] + " in city " + args[0] + " not found!";
         }
 
+        try{
+            amount = Integer.parseInt(args[2]);
+        } catch (NumberFormatException e){
+            return "The amount has to be a positive Integer!";
+        }
+
+        try{
+            price = product.getBuyPrice(amount);
+        }
+        catch (Exception e)
+        {
+            return e.getMessage();
+        }
+
+        transaction = new Transaction(market, product, amount * (-1));
+        return "Do you really want to buy " + amount + " " + args[1] + " for "+String.format("%,.2f", price) + " " + Bot.config.get("Currency") +" in "+ args[0] + "?";
     }
 
     @Override

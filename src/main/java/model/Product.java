@@ -1,6 +1,9 @@
 package model;
 
 
+import frontend.Bot;
+import model.exceptions.NoStorageException;
+import model.exceptions.ProductNotAvailableException;
 
 public class Product {
     public static final int numberProperties = 7;
@@ -49,16 +52,6 @@ public class Product {
 
     }
 
-    public void setCurrentStock(int newStock){
-        if(newStock > maxStock){
-            System.out.println("Error: NewStock " + newStock + " bigger than maxStock " + maxStock + " for Product "+ name);
-        } else if(newStock < 0) {
-            System.out.println("Error: NewStock " + newStock + " less than zero for Product "+ name);
-        } else {
-            currentStock = newStock;
-        }
-    }
-
     public double getPriceAtStock(int stock){
 
         double tmpConsum = 0.2;
@@ -70,10 +63,42 @@ public class Product {
         if(production != 0) {
             tmpProduct = production;
         }
-
         double xAxisStretching = (tmpProduct/tmpConsum)* 16.0/(maxStock); //if there is more production than consumption, squash the graph on the x-Axis. Use maxStock to calibrate for the expected amount
         double yAxisStretching = priceVolatilityFactor; //scale the price increase with the priceDevelopmentFactor
         return (yAxisStretching/(stock*xAxisStretching + 0.5)) + minPrice;
+    }
+
+    public double getBuyPrice(int amount) throws ProductNotAvailableException{
+        double sum = 0;
+        if(amount <0 ){
+            System.out.println("Error: Amount to buy may not be negative!");
+            throw new NumberFormatException("Amount to buy may not be negative!");
+        }
+        if(currentStock - amount < 0){
+            System.out.println("Error: Not enough available!");
+            throw new ProductNotAvailableException("Not enough available to complete transaction!");
+        }
+        for(int i = 0; i<amount; i++){
+            sum += getPriceAtStock(currentStock-i);
+        }
+        return sum * Bot.npcTraderMargin;
+    }
+
+    public double getSellPrice(int amount) throws NoStorageException{
+        double sum = 0;
+        if(amount <0 ){
+            System.out.println("Error: Amount to buy may not be negative!");
+            throw new NumberFormatException("Amount to buy may not be negative!");
+        }
+        if(currentStock + amount > maxStock){
+            System.out.println("Error: Not enough available!");
+            throw new NoStorageException("The city does not have enough storage to complete the transaction!");
+        }
+
+        for(int i = 1; i<=amount; i++){ //start with one, as the NPC merchant buys at the price where they can sell it at
+            sum += getPriceAtStock(getCurrentStock()+i);
+        }
+        return sum;
     }
 
 

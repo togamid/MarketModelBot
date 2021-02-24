@@ -3,6 +3,7 @@ package frontend;
 import data.DataConnector;
 import frontend.commands.*;
 
+import model.AutosafeThread;
 import model.Model;
 import model.TimeThread;
 import model.Transaction;
@@ -24,6 +25,7 @@ public class Bot {
     public static DataConnector dataConnector;
     public static final Config config = new Config("config.txt");
     public static final String botSignifier = config.get("BotSignifier");
+    public static final double npcTraderMargin = Double.parseDouble(config.get("NpcTraderMargin"));
 
     public void init(){
         try {
@@ -44,10 +46,12 @@ public class Bot {
         }
 
         final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(TimeThread::run, 0, Integer.parseInt( config.get("SecondsPerDay")), TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(TimeThread::run, 0, 20, TimeUnit.SECONDS);
 
-        //TODO: autosafe every hour/10 minutes
+        final ScheduledExecutorService autosafeService = Executors.newSingleThreadScheduledExecutor();
+        autosafeService.scheduleAtFixedRate(AutosafeThread::run, 10, Integer.parseInt( config.get("AutosafeTime(Minutes)")), TimeUnit.MINUTES);
 
-
+        //TODO: prices in GP, SP, CP -> as Int in CP
+        //TODO: list command that lists products in a city
     }
 }
