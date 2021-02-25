@@ -20,13 +20,15 @@ public class Bot {
     public static JDA jda;
     public static HashMap<String, ICommand> commands = new HashMap<>();
     private static final ICommand[] commandArray = {new Ping(),new ListCommand(), new BuyCommand(), new SellCommand(), new SafeCommand(),
-            new LoadCommand(), new ReloadNoSafeCommand(), new HelpCommand()};
+            new LoadCommand(), new ReloadNoSafeCommand(), new ShutdownCommand(), new HelpCommand()};
     public static Model model;
     public static ConcurrentHashMap<String, Transaction> pendingTransactions = new ConcurrentHashMap<>();
     public static DataConnector dataConnector;
     public static final Config config = new Config("config.txt");
     public static final String botSignifier = config.get("BotSignifier");
     public static final double npcTraderMargin = Double.parseDouble(config.get("NpcTraderMargin"));
+    private static final ScheduledExecutorService autosafeService = Executors.newSingleThreadScheduledExecutor();
+    private static final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public void init(){
         try {
@@ -45,11 +47,14 @@ public class Bot {
             command.init();
             commands.put(command.getCommand(), command);
         }
-
-        final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(TimeThread::run, 0, 20, TimeUnit.SECONDS);
-
-        final ScheduledExecutorService autosafeService = Executors.newSingleThreadScheduledExecutor();
         autosafeService.scheduleAtFixedRate(AutosafeThread::run, 10, Integer.parseInt( config.get("AutosafeTime(Minutes)")), TimeUnit.MINUTES);
+    }
+
+    public static void shutdown(){
+        dataConnector.safeModel(Bot.model);
+        executorService.shutdown();
+        autosafeService.shutdown();
+        jda.shutdown();
     }
 }
