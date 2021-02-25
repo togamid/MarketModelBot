@@ -70,7 +70,7 @@ public class BuyCommand implements ICommand {
 
     @Override
     public String getLongDesc() {
-        return null;
+        return "Allows you to buy the amount specified from the specified city. Usage: buy <city> <product> <amount>";
     }
 
     @Override

@@ -4,13 +4,15 @@ import frontend.Bot;
 import model.CityMarket;
 import model.DndPrice;
 import model.Product;
+import model.exceptions.NoStorageException;
 import model.exceptions.ProductNotAvailableException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ListCommand implements ICommand{
     public final String commandName = "list";
-    private final int paddingLength = 15;
+    private final int paddingLength = -15;
+    private final int pricePaddingLength = -20;
     @Override
     public String run(String[] args, MessageReceivedEvent event) {
         if(args.length == 0){
@@ -26,33 +28,39 @@ public class ListCommand implements ICommand{
                 return "City " + args[0]+ " not found!";
             }
             StringBuilder builder = new StringBuilder("List of all products in " + city.getName()+":");
-            builder.append("\nName");
-            for (String header: new String[]{"current stock", "production", "consumption", "buy price" }) {
+            builder.append("\n```");
+            for (String header: new String[]{"Name","current stock", "production", "consumption"}) {
                 builder.append(String.format("%1$" + paddingLength + "s", header));
             }
+            builder.append(String.format("%1$" + pricePaddingLength + "s", "buy price"));
+            builder.append(String.format("%1$" + pricePaddingLength + "s", "sell price"));
             for (Product product : city.getAllProducts()){
                 builder.append("\n");
-                builder.append( product.getName());
-                builder.append(":\t");
+                builder.append(String.format("%1$" + paddingLength + "s", product.getName() + ":"));
                 builder.append(String.format("%1$" + paddingLength + "s", product.getCurrentStock()));
-                builder.append("\t");
                 builder.append(String.format("%1$" + paddingLength + "s", product.production));
-                builder.append("\t");
                 builder.append(String.format("%1$" + paddingLength + "s", product.consumption));
-                builder.append("\t");
-                String price;
+                String buyPrice;
                 try{
-                    price = DndPrice.getPrice(product.getBuyPrice(1));
+                    buyPrice = DndPrice.getPrice(product.getBuyPrice(1));
                 }
                 catch (ProductNotAvailableException e){
-                    price = "N/A";
+                    buyPrice = "N/A";
                 }
-                builder.append(String.format("%1$" + (paddingLength + 15) + "s", price));
-                builder.append("\t");
+                builder.append(String.format("%1$" + pricePaddingLength + "s", buyPrice));
+                String sellPrice;
+                try{
+                    sellPrice = DndPrice.getPrice(product.getSellPrice(1));
+                }
+                catch (NoStorageException e){
+                    sellPrice = "N/A";
+                }
+                builder.append(String.format("%1$" + pricePaddingLength + "s", sellPrice));
+                builder.append("```");
             }
             return builder.toString();
         }
-        return "Too many arguments. Usage: \"list\" ord \"list <city>\"";
+        return "Too many arguments. Usage: \"list\" or \"list <city>\"";
     }
 
     @Override
