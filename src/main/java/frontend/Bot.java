@@ -40,7 +40,7 @@ public class Bot {
         catch (Exception e){
            System.out.println(e.getMessage());
         }
-        dataConnector = new DataConnector(config.get("Path"), config.getCities());
+        dataConnector = new DataConnector(config.get("Path"));
         model = dataConnector.loadModel();
 
         for (ICommand command : commandArray) {

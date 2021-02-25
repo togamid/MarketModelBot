@@ -2,7 +2,6 @@ package frontend.commands;
 
 import frontend.Bot;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class LoadCommand implements ICommand{
@@ -10,6 +9,11 @@ public class LoadCommand implements ICommand{
 
     @Override
     public String run(String[] args, MessageReceivedEvent event) {
+        String permission = Util.checkPermission(event);
+        if(permission != null){
+            return permission;
+        }
+
        Bot.dataConnector.safeModel(Bot.model);
        Bot.model = Bot.dataConnector.loadModel();
         return "Successfully reloaded the data";

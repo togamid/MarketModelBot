@@ -8,6 +8,10 @@ public class ReloadNoSafeCommand implements ICommand{
     private final String commandName = "reloadWithoutSaving";
     @Override
     public String run(String[] args, MessageReceivedEvent event) {
+        String permission = Util.checkPermission(event);
+        if(permission != null){
+            return permission;
+        }
         Bot.model = Bot.dataConnector.loadModel();
         return null;
     }

@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class Config {
 
     public final HashMap<String, String> config = new HashMap<>();
-    private String[] cities;
 
     public Config(String path){
         try {
@@ -26,20 +25,9 @@ public class Config {
             System.out.println("The config file could not be loaded. Did your remember to create it?");
             e.printStackTrace();
         }
-
-        if(config.get("Cities") != null){
-            String[] cities = config.get("Cities").split(",");
-            for (int i = 0; i< cities.length; i++) {
-                cities[i] = cities[i].trim();
-            }
-            this.cities = cities;
-        }
     }
     public String get(String key){
         return config.get(key);
     }
 
-    public String[] getCities() {
-        return cities;
-    }
 }

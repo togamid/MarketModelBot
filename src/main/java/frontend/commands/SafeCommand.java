@@ -9,6 +9,10 @@ public class SafeCommand implements ICommand{
 
     @Override
     public String run(String[] args, MessageReceivedEvent event) {
+        String permission = Util.checkPermission(event);
+        if(permission != null){
+            return permission;
+        }
         if(Bot.dataConnector.safeModel(Bot.model)){
             return "Safed successfully!";
         } else {

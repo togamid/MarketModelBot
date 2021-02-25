@@ -8,6 +8,10 @@ public class ShutdownCommand implements ICommand{
     private final String commandName = "shutdown";
     @Override
     public String run(String[] args, MessageReceivedEvent event) {
+        String permission = Util.checkPermission(event);
+        if(permission != null){
+            return permission;
+        }
         Bot.shutdown();
         return "Shutting down the bot!";
     }

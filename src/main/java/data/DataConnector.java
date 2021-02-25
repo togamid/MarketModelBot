@@ -12,27 +12,15 @@ public class DataConnector {
     private final String path;
     private final String[] cities;
 
-    public DataConnector(String path, String[] cities){
+    public DataConnector(String path){
         this.path = path;
         File directory = new File(path);
-        FilenameFilter textFilefilter = new FilenameFilter(){
-            public boolean accept(File dir, String name) {
-                String lowercaseName = name.toLowerCase();
-                if (lowercaseName.endsWith(".txt")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        };
         this.cities = directory.list((f,s) -> (s.endsWith(".txt") ));
-        System.out.println(this.cities.length);
     }
     public Model loadModel(){
         List<CityMarket> cityObjects = new LinkedList<>();
         for(String city : cities){
            cityObjects.add(loadCityMarket(path + File.separator + city, city.substring(0,city.indexOf(".")), true));
-           System.out.println(path + File.separator + city);
         }
         return new Model(cityObjects.toArray(new CityMarket[0]));
     }
