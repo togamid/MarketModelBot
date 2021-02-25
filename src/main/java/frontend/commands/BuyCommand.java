@@ -53,14 +53,7 @@ public class BuyCommand implements ICommand {
 
     @Override
     public void callback(Message message){
-        if(transaction != null) {
-            message.addReaction("U+1F44D").queue();
-            message.addReaction("U+1F44E").queue();
-            Transaction trans = transaction;
-            transaction = null;
-            trans.message = message;
-            Bot.pendingTransactions.put(message.getId(), trans);
-        }
+        Util.acceptTransaction(message, transaction);
     }
 
     @Override
