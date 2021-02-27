@@ -54,7 +54,7 @@ public class Product {
 
     public double getPriceAtStock(int stock){
 
-        double tmpConsum = 0.2;
+       /* double tmpConsum = 0.2;
         if(consumption != 0) {
             tmpConsum = consumption;
         }
@@ -65,7 +65,25 @@ public class Product {
         }
         double xAxisStretching = (tmpProduct/tmpConsum)* 16.0/(maxStock); //if there is more production than consumption, squash the graph on the x-Axis. Use maxStock to calibrate for the expected amount
         double yAxisStretching = priceVolatilityFactor; //scale the price increase with the priceDevelopmentFactor
-        return (yAxisStretching/(stock*xAxisStretching + 0.5)) + minPrice;
+        return (yAxisStretching/(stock*xAxisStretching + 0.5)) + minPrice; */
+
+        double minPrice = this.minPrice;
+        double maxPrice = this.priceVolatilityFactor*2 + this.minPrice;
+        double minStock = 0;
+        double maxStock = this.maxStock;
+
+        double price = 0;
+        if(stock > maxStock){
+            price = minPrice;
+        }
+        else if (stock < minStock){
+            price = maxPrice;
+        }
+        else {
+            price = maxPrice + ((minPrice - maxPrice)/(maxStock - minStock))*stock;
+        }
+
+        return price;
     }
 
     public double getBuyPrice(int amount) throws ProductNotAvailableException{

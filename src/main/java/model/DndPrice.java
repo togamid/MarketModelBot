@@ -1,28 +1,32 @@
 package model;
 
 public class DndPrice {
-    private final int copperAmount;
+    private final long copperAmount;
+    private final int decimalPoints = 2;
+    private final int GPRatio = (int) Math.pow(10, 2+decimalPoints);
+    private final int SPRatio = (int) Math.pow(10, 1+decimalPoints);
+    private final double CPRatio = (int) Math.pow(10, decimalPoints);
 
     public DndPrice(double price){
-        copperAmount = (int) Math.round(price*100);
+        copperAmount = (int) Math.ceil(price*100);
     }
 
-    public DndPrice(int price){
-        copperAmount = price;
+
+    public static String getPrice(double price, boolean fractional){
+        return new DndPrice(price).getPrice(fractional);
     }
 
-    public static String getPrice(double price){
-        return new DndPrice(price).getPrice();
-    }
-
-    public String getPrice(){
-        int gp = (copperAmount/100);
-        int sp = (copperAmount%100)/10;
-        int cp = (copperAmount%10);
+    public String getPrice(boolean fractional){
+        long gp = (copperAmount/GPRatio);
+        long sp = (copperAmount%GPRatio)/SPRatio;
+        double cp = (copperAmount%SPRatio) / CPRatio;
+        if(!fractional){
+            cp = Math.ceil(cp);
+        }
         return ""+gp+" GP "+sp+" SP "+cp+" CP";
     }
 
     public String toString(){
-        return getPrice();
+        return getPrice(false);
     }
 }

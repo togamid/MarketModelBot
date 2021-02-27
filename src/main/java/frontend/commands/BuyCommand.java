@@ -39,6 +39,12 @@ public class BuyCommand implements ICommand {
             return "The amount has to be a positive Integer!";
         }
 
+        String result = "";
+        if(product.getCurrentStock() < amount){
+            amount = product.getCurrentStock();
+            result += ("**Only " + amount + " available!**");
+        }
+
         try{
             price = product.getBuyPrice(amount);
         }
@@ -48,7 +54,7 @@ public class BuyCommand implements ICommand {
         }
 
         transaction = new Transaction(market, product, amount * (-1));
-        return "Do you really want to buy " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price) +" in "+ market.getName() + "?";
+        return result + "Do you really want to buy " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price, false) +" in "+ market.getName() + "?";
     }
 
     @Override

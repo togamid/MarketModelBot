@@ -5,6 +5,7 @@ import model.CityMarket;
 import model.DndPrice;
 import model.Product;
 import model.Transaction;
+import model.exceptions.NoStorageException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -36,6 +37,13 @@ public class SellCommand implements ICommand{
             return "The amount has to be a positive Integer!";
         }
 
+        String result = "";
+
+        if(product.getCurrentStock() + amount > product.getMaxStock() ){
+            amount = product.getMaxStock() - product.getCurrentStock();
+            result += ("**Only space for " + amount + " available!** ");
+        }
+
         try{
             price = product.getSellPrice(amount);
         }
@@ -45,7 +53,7 @@ public class SellCommand implements ICommand{
         }
 
         transaction = new Transaction(market, product, amount);
-        return "Do you really want to sell " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price) +" in "+ market.getName() + "?";
+        return result + "Do you really want to sell " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price, false) +" in "+ market.getName() + "?";
     }
 
     @Override

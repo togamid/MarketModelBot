@@ -29,7 +29,7 @@ public class ListCommand implements ICommand{
             }
             StringBuilder builder = new StringBuilder("List of all products in " + city.getName()+":");
             builder.append("\n```");
-            for (String header: new String[]{"Name","current stock", "production", "consumption"}) {
+            for (String header: new String[]{"Name","current stock","max stock", "production", "consumption"}) {
                 builder.append(String.format("%1$" + paddingLength + "s", header));
             }
             builder.append(String.format("%1$" + pricePaddingLength + "s", "buy price"));
@@ -38,11 +38,12 @@ public class ListCommand implements ICommand{
                 builder.append("\n");
                 builder.append(String.format("%1$" + paddingLength + "s", product.getName() + ":"));
                 builder.append(String.format("%1$" + paddingLength + "s", product.getCurrentStock()));
+                builder.append(String.format("%1$" + paddingLength + "s", product.getMaxStock()));
                 builder.append(String.format("%1$" + paddingLength + "s", product.production));
                 builder.append(String.format("%1$" + paddingLength + "s", product.consumption));
                 String buyPrice;
                 try{
-                    buyPrice = DndPrice.getPrice(product.getBuyPrice(1));
+                    buyPrice = DndPrice.getPrice(product.getBuyPrice(1), true);
                 }
                 catch (ProductNotAvailableException e){
                     buyPrice = "N/A";
@@ -50,7 +51,7 @@ public class ListCommand implements ICommand{
                 builder.append(String.format("%1$" + pricePaddingLength + "s", buyPrice));
                 String sellPrice;
                 try{
-                    sellPrice = DndPrice.getPrice(product.getSellPrice(1));
+                    sellPrice = DndPrice.getPrice(product.getSellPrice(1), true);
                 }
                 catch (NoStorageException e){
                     sellPrice = "N/A";

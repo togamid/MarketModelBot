@@ -13,7 +13,7 @@ public class ReloadNoSafeCommand implements ICommand{
             return permission;
         }
         Bot.model = Bot.dataConnector.loadModel();
-        return null;
+        return "reloaded the data";
     }
 
     @Override
