@@ -52,9 +52,9 @@ public class DataConnector {
                 int consumption = Integer.parseInt(values[2].trim());
                 int maxStock = Integer.parseInt(values[3].trim());
                 double minPrice = Double.parseDouble(values[4].trim());
-                int priceVolatility = Integer.parseInt(values[5].trim());
+                double maxPrice = Double.parseDouble(values[5].trim());
                 int currStock = Integer.parseInt(values[6].trim());
-                products.add(new Product(name, production, consumption, maxStock, minPrice, priceVolatility,currStock));
+                products.add(new Product(name, production, consumption, maxStock, minPrice, maxPrice,currStock));
 
                 line = reader.readLine();
             }
@@ -72,7 +72,7 @@ public class DataConnector {
     public boolean safeModel(Model model){
         boolean noError = true;
         for(CityMarket market : model.getAllMarkets()){
-            String firstLine="name;production;consumption;maxStock;minPrice;volatility,currentStock";
+            String firstLine="name;production;consumption;maxStock;minPrice;maxPrice;currentStock";
             noError = noError & safeCityMarket(market, path + File.separator + market.getName() + ".txt", firstLine);
         }
         return noError;
@@ -91,7 +91,7 @@ public class DataConnector {
             builder.append(";");
             builder.append(product.minPrice);
             builder.append(";");
-            builder.append(product.priceVolatilityFactor);
+            builder.append(product.maxPrice);
             builder.append(";");
             builder.append(product.getCurrentStock());
         }

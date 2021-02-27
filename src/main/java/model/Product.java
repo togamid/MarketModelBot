@@ -11,20 +11,20 @@ public class Product {
     public final int production; //how much is produced each day
     public final int consumption; //how much is consumed each day
     public final double minPrice; //the minimum price possible. Is approached asymptotically
-    public final int priceVolatilityFactor; //this defines how much the price increases if the stock decreases
+    public final double maxPrice; //the maximum price
     private int currentStock;
     private final int maxStock; //the maximum amount the city can store of this good. Also used to scale the price-development to the expected quantity
 
 
 
 
-    public Product(String name, int production, int consumption, int maxStock, double minPrice, int priceVolatilityFactor, int currentStock){
+    public Product(String name, int production, int consumption, int maxStock, double minPrice, double maxPrice, int currentStock){
         this.name = name;
         this.production = production;
         this.consumption = consumption;
         this.maxStock = maxStock;
         this.minPrice = minPrice;
-        this.priceVolatilityFactor = priceVolatilityFactor;
+        this.maxPrice = maxPrice;
         this.currentStock = currentStock;
     }
 
@@ -68,7 +68,7 @@ public class Product {
         return (yAxisStretching/(stock*xAxisStretching + 0.5)) + minPrice; */
 
         double minPrice = this.minPrice;
-        double maxPrice = this.priceVolatilityFactor*2 + this.minPrice;
+        double maxPrice = this.maxPrice;
         double minStock = 0;
         double maxStock = this.maxStock;
 

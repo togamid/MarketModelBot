@@ -2,7 +2,6 @@ package frontend;
 
 import frontend.commands.ICommand;
 import model.Transaction;
-import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -20,7 +19,7 @@ public class EventListeners extends ListenerAdapter {
             mention = event.getAuthor().getAsMention();
         }
 
-        if(!event.getAuthor().isBot() && (event.getChannel().getName().equals(Bot.config.get("BotChannel")) || event.isFromType(ChannelType.PRIVATE)) && msgContent.startsWith(Bot.botSignifier)){
+        if(!event.getAuthor().isBot() && event.getChannel().getName().equals(Bot.config.get("BotChannel")) && msgContent.startsWith(Bot.botSignifier)){
             String command;
             String[] args;
             int posSpace = msgContent.indexOf(' ');

@@ -12,7 +12,6 @@ public class ShutdownCommand implements ICommand{
         if(permission != null){
             return permission;
         }
-        Bot.shutdown();
         return "Shutting down the bot!";
     }
 
@@ -38,6 +37,6 @@ public class ShutdownCommand implements ICommand{
 
     @Override
     public void callback(Message m) {
-
+        Bot.shutdown();
     }
 }
