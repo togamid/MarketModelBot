@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CityMarket {
@@ -9,7 +10,7 @@ public class CityMarket {
     public CityMarket(Product[] products, String name){
         this.name = name;
         for (Product product: products ){
-            this.products.putIfAbsent(product.getName(), product);
+            this.products.putIfAbsent(product.getName().toLowerCase(Locale.ROOT), product);
         }
     }
 
@@ -19,7 +20,7 @@ public class CityMarket {
 
 
     public Product getProduct(String name){
-        return products.get(name);
+        return products.get(name.toLowerCase(Locale.ROOT));
     }
 
     public Product[] getAllProducts(){

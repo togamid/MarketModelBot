@@ -48,7 +48,7 @@ public class BuyCommand implements ICommand {
         }
 
         transaction = new Transaction(market, product, amount * (-1));
-        return "Do you really want to buy " + amount + " " + args[1] + " for "+ DndPrice.getPrice(price) +" in "+ args[0] + "?";
+        return "Do you really want to buy " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price) +" in "+ market.getName() + "?";
     }
 
     @Override

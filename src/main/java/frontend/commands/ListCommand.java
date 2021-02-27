@@ -56,8 +56,9 @@ public class ListCommand implements ICommand{
                     sellPrice = "N/A";
                 }
                 builder.append(String.format("%1$" + pricePaddingLength + "s", sellPrice));
-                builder.append("```");
+
             }
+            builder.append("```");
             return builder.toString();
         }
         return "Too many arguments. Usage: \"list\" or \"list <city>\"";

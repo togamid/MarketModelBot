@@ -13,12 +13,12 @@ public class Ping implements ICommand{
 
     @Override
     public String getShortDesc() {
-        return "short description";
+        return "Pings the bot to see if it is still active";
     }
 
     @Override
     public String getLongDesc() {
-        return "long Description";
+        return "Pings the bot to see if it is still active";
     }
 
     @Override

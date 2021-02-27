@@ -58,3 +58,5 @@ public class Bot {
         jda.shutdown();
     }
 }
+
+//TODO: preis linear, wie produktion? -> vielleicht preise von in eienr Woche?

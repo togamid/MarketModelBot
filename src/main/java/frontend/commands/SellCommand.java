@@ -45,7 +45,7 @@ public class SellCommand implements ICommand{
         }
 
         transaction = new Transaction(market, product, amount);
-        return "Do you really want to sell " + amount + " " + args[1] + " for "+ DndPrice.getPrice(price) +" in "+ args[0] + "?";
+        return "Do you really want to sell " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price) +" in "+ market.getName() + "?";
     }
 
     @Override
@@ -55,7 +55,7 @@ public class SellCommand implements ICommand{
 
     @Override
     public String getShortDesc() {
-        return "Sell an amount of a product from a city. Usage: buy <city> <product> <amount>";
+        return "Sell an amount of a product from a city. Usage: sell <city> <product> <amount>";
     }
 
     @Override
