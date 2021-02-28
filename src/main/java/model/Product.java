@@ -8,17 +8,17 @@ import model.exceptions.ProductNotAvailableException;
 public class Product {
     public static final int numberProperties = 7;
     public final String name;
-    public final int production; //how much is produced each day
-    public final int consumption; //how much is consumed each day
+    public final double production; //how much is produced each day
+    public final double consumption; //how much is consumed each day
     public final double minPrice; //the minimum price possible. Is approached asymptotically
     public final double maxPrice; //the maximum price
-    private int currentStock;
+    private double currentStock;
     private final int maxStock; //the maximum amount the city can store of this good. Also used to scale the price-development to the expected quantity
 
 
 
 
-    public Product(String name, int production, int consumption, int maxStock, double minPrice, double maxPrice, int currentStock){
+    public Product(String name, double production, double consumption, int maxStock, double minPrice, double maxPrice, double currentStock){
         this.name = name;
         this.production = production;
         this.consumption = consumption;
@@ -33,6 +33,9 @@ public class Product {
     }
 
     public int getCurrentStock(){
+        return (int)currentStock;
+    }
+    public double getExactCurrentStock(){
         return currentStock;
     }
 
@@ -41,7 +44,7 @@ public class Product {
     }
 
     public boolean processTransaction(Transaction trans){
-        int newStock = currentStock + trans.amount;
+        double newStock = currentStock + trans.amount;
         if(newStock < 0 || newStock > maxStock) {
             return false;
         }
@@ -54,6 +57,7 @@ public class Product {
 
     public double getPriceAtStock(int stock){
 
+        //Model using 1/x as price curve
        /* double tmpConsum = 0.2;
         if(consumption != 0) {
             tmpConsum = consumption;
@@ -72,7 +76,7 @@ public class Product {
         double minStock = 0;
         double maxStock = this.maxStock;
 
-        double price = 0;
+        double price;
         if(stock > maxStock){
             price = minPrice;
         }
@@ -97,7 +101,7 @@ public class Product {
             throw new ProductNotAvailableException("Not enough available to complete transaction!");
         }
         for(int i = 0; i<amount; i++){
-            sum += getPriceAtStock(currentStock-i);
+            sum += getPriceAtStock(getCurrentStock()-i);
         }
         return sum * Bot.npcTraderMargin;
     }

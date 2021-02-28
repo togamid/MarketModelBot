@@ -48,12 +48,12 @@ public class DataConnector {
                 }
 
                 String name = values[0];
-                int production = Integer.parseInt(values[1].trim());
-                int consumption = Integer.parseInt(values[2].trim());
+                double production = Double.parseDouble(values[1].trim());
+                double consumption = Double.parseDouble(values[2].trim());
                 int maxStock = Integer.parseInt(values[3].trim());
                 double minPrice = Double.parseDouble(values[4].trim());
                 double maxPrice = Double.parseDouble(values[5].trim());
-                int currStock = Integer.parseInt(values[6].trim());
+                double currStock = Double.parseDouble(values[6].trim());
                 products.add(new Product(name, production, consumption, maxStock, minPrice, maxPrice,currStock));
 
                 line = reader.readLine();
@@ -93,7 +93,7 @@ public class DataConnector {
             builder.append(";");
             builder.append(product.maxPrice);
             builder.append(";");
-            builder.append(product.getCurrentStock());
+            builder.append(product.getExactCurrentStock());
         }
         FileWriter fileWriter;
         try{
