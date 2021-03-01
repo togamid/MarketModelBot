@@ -64,7 +64,7 @@ public class DataConnector {
             System.out.println("IOException");
             return null;
         } catch (NumberFormatException e){
-            System.out.println("Malormed CSV: " + path);
+            System.out.println("Malformed CSV: " + path);
             return null;
         }
     }
@@ -105,13 +105,13 @@ public class DataConnector {
         try{
             fileWriter.write(builder.toString());
         }catch (IOException e){
-            System.out.println("An error occured while saving!");
+            System.out.println("An error occurred while saving!");
             return false;
         }
         try{
             fileWriter.close();
         } catch(IOException e){
-            System.out.println("An error occured after saving!");
+            System.out.println("An error occurred after saving!");
         }
         return true;
     }

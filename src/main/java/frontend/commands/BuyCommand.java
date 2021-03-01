@@ -8,11 +8,13 @@ import model.Transaction;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.entities.Message;
 
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 public class BuyCommand implements ICommand {
     private final String command = "buy";
-    private Transaction transaction = null;
+    private final Queue<Transaction> transaction = new LinkedList<>();
 
 
 
@@ -53,13 +55,13 @@ public class BuyCommand implements ICommand {
             return e.getMessage();
         }
 
-        transaction = new Transaction(market, product, amount * (-1));
+        transaction.add(new Transaction(market, product, amount * (-1)));
         return result + "Do you really want to buy " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price, false) +" in "+ market.getName() + "?";
     }
 
     @Override
     public void callback(Message message){
-        Util.acceptTransaction(message, transaction);
+        Util.acceptTransaction(message, transaction.remove());
     }
 
     @Override

@@ -5,14 +5,16 @@ import model.CityMarket;
 import model.DndPrice;
 import model.Product;
 import model.Transaction;
-import model.exceptions.NoStorageException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 public class SellCommand implements ICommand{
     private final String command = "sell";
-    private Transaction transaction = null;
+    private final Queue<Transaction> transaction = new LinkedList<>();
 
 
     @Override
@@ -52,13 +54,13 @@ public class SellCommand implements ICommand{
             return e.getMessage();
         }
 
-        transaction = new Transaction(market, product, amount);
+        transaction.add(new Transaction(market, product, amount));
         return result + "Do you really want to sell " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price, false) +" in "+ market.getName() + "?";
     }
 
     @Override
     public void callback(Message message){
-        Util.acceptTransaction(message, transaction);
+        Util.acceptTransaction(message, transaction.remove());
     }
 
     @Override
@@ -68,7 +70,7 @@ public class SellCommand implements ICommand{
 
     @Override
     public String getLongDesc() {
-        return null;
+        return "Allows you to sell the amount specified to the specified city. Usage: sell <city> <product> <amount>";
     }
 
     @Override
