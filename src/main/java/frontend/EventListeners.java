@@ -34,14 +34,22 @@ public class EventListeners extends ListenerAdapter {
             }
 
             ICommand commandObj = Bot.commands.get(command);
-
-
             if(commandObj != null){
-                event.getChannel().sendMessage(mention +" "+  commandObj.run(args, event)).queue(m -> commandObj.callback(m));
+             //TODO: fix this properly
+            String[] responses = commandObj.run(args, event).split("\t");
+            event.getChannel().sendMessage(mention +" "+ responses[0]).queue(m -> commandObj.callback(m));
+
+                for(int i = 1; i< responses.length; i++){
+                    event.getChannel().sendMessage(responses[i]).queue(m -> commandObj.callback(m));
+                }
             } else {
                 System.out.println("Warning: command " + command + " not found!");
             }
         }
+    }
+
+    private String[] splitMessage(String originalmessage){
+        return originalmessage.split("\t");
     }
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event){
