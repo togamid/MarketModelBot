@@ -16,9 +16,11 @@ public class Config {
             Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String entry = myReader.nextLine();
-                String key = entry.substring(0,entry.indexOf(':')).trim();
-                String value = entry.substring(entry.indexOf(':')+1).trim();
-                config.put(key,value);
+                if(!entry.startsWith("#")) {
+                    String key = entry.substring(0, entry.indexOf(':')).trim();
+                    String value = entry.substring(entry.indexOf(':') + 1).trim();
+                    config.put(key, value);
+                }
             }
             myReader.close();
         } catch (FileNotFoundException e) {
