@@ -2,6 +2,7 @@ package model;
 
 
 import frontend.Bot;
+import frontend.commands.BuySellCommand;
 
 
 import java.time.Duration;
@@ -17,6 +18,6 @@ public class TimeThread{
             nextUpdate = nextUpdate.plusDays(1);
         }
 
-        Bot.pendingTransactions.entrySet().removeIf(e -> Duration.between( e.getValue().creationTime, LocalDateTime.now()).getSeconds() >60 );
+        BuySellCommand.pendingTransactions.entrySet().removeIf(e -> Duration.between( e.getValue().creationTime, LocalDateTime.now()).getSeconds() >60 );
     }
 }

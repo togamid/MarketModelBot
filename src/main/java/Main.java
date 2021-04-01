@@ -2,6 +2,7 @@
 import frontend.Bot;
 
 
+
 public class Main {
 
 
@@ -9,4 +10,10 @@ public class Main {
         Bot bot = new Bot();
         bot.init();
     }
+
+    //TODO: output things as scrollable lists
+    //TODO: Fix @everyone bug
+    //TODO: introduce !search command
+    //TODO: sort lists when loading?
+
 }

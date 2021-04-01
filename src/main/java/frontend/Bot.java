@@ -6,12 +6,10 @@ import frontend.commands.*;
 import model.AutosafeThread;
 import model.Model;
 import model.TimeThread;
-import model.Transaction;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +20,6 @@ public class Bot {
     private static final ICommand[] commandArray = {new Ping(),new ListCommand(), new BuyCommand(), new SellCommand(), new SafeCommand(),
             new LoadCommand(), new ReloadNoSafeCommand(), new ShutdownCommand(), new HelpCommand()};
     public static Model model;
-    public static ConcurrentHashMap<String, Transaction> pendingTransactions = new ConcurrentHashMap<>();
     public static DataConnector dataConnector;
     public static final Config config = new Config("config.txt");
     public static final String botSignifier = config.get("BotSignifier");

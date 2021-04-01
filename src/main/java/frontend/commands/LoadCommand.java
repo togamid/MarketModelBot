@@ -15,7 +15,7 @@ public class LoadCommand implements ICommand{
         }
 
        Bot.dataConnector.safeModel(Bot.model);
-       Bot.model = Bot.dataConnector.loadModel();
+       Bot.model = Bot.dataConnector.loadModel(); //TODO: this doesn't add new cities and just updates the old ones
         return "Successfully reloaded the data";
     }
 

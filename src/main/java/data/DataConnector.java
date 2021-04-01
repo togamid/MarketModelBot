@@ -1,5 +1,6 @@
 package data;
 
+import frontend.Bot;
 import model.CityMarket;
 import model.Model;
 import model.Product;

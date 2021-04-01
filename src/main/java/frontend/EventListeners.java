@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.commands.BuySellCommand;
 import frontend.commands.ICommand;
 import model.Transaction;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -45,7 +46,7 @@ public class EventListeners extends ListenerAdapter {
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event){
         String reaction = event.getReaction().getReactionEmote().getAsCodepoints();
-        Transaction transaction = Bot.pendingTransactions.get(event.getMessageId()); //TODO: This can be more performant if the lookup is after checking the emoji
+        Transaction transaction = BuySellCommand.getTransaction(event.getMessageId()); //TODO: This can be more performant if the lookup is after checking the emoji
         if(transaction != null && event.getUserIdLong() == transaction.message.getMentionedUsers().get(0).getIdLong()) {
             if(reaction.equalsIgnoreCase("U+1F44D")){
                 if(transaction.process()){
@@ -54,10 +55,10 @@ public class EventListeners extends ListenerAdapter {
                     transaction.message.addReaction("U+274E").queue();
                     event.getChannel().sendMessage(event.getUser().getAsMention()+ " the transaction could not be processed. Please try again!").queue();
                 }
-                Bot.pendingTransactions.remove(event.getMessageId());
+                BuySellCommand.pendingTransactions.remove(event.getMessageId());
             } else if(reaction.equalsIgnoreCase("U+1F44E")){
                 transaction.message.addReaction("U+274E").queue();
-                Bot.pendingTransactions.remove(event.getMessageId());
+                BuySellCommand.pendingTransactions.remove(event.getMessageId());
             }
 
         }

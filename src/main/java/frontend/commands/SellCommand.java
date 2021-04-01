@@ -1,67 +1,22 @@
 package frontend.commands;
 
-import frontend.Bot;
-import model.CityMarket;
-import model.DndPrice;
-import model.Product;
 import model.Transaction;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 
-public class SellCommand implements ICommand{
+public class SellCommand extends BuySellCommand{
     private final String command = "sell";
     private final Queue<Transaction> transaction = new LinkedList<>();
 
 
     @Override
     public String run(String[] args, MessageReceivedEvent event) {
-        int amount;
-        double price;
-        if(args.length != 3){
-            return "Not the right amount of args. Usage: sell <city> <product> <amount>";
-        }
-        CityMarket market = Bot.model.getMarket(args[0]);
-        if(market == null){
-            return "City " + args[0] + " not found!";
-        }
-        Product product = market.getProduct(args[1]);
-        if(product == null){
-            return "Product " + args[1] + " in city " + args[0] + " not found!";
-        }
-
-        try{
-            amount = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e){
-            return "The amount has to be a positive Integer!";
-        }
-
-        String result = "";
-
-        if(product.getCurrentStock() + amount > product.getMaxStock() ){
-            amount = product.getMaxStock() - product.getCurrentStock();
-            result += ("**Only space for " + amount + " available!** ");
-        }
-
-        try{
-            price = product.getSellPrice(amount);
-        }
-        catch (Exception e)
-        {
-            return e.getMessage();
-        }
-
-        transaction.add(new Transaction(market, product, amount));
-        return result + "Do you really want to sell " + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price, false) +" in "+ market.getName() + "?";
+        return createTransaction(args, false);
     }
 
-    @Override
-    public void callback(Message message){
-        Util.acceptTransaction(message, transaction.remove());
-    }
 
     @Override
     public String getShortDesc() {
@@ -78,8 +33,4 @@ public class SellCommand implements ICommand{
         return command;
     }
 
-    @Override
-    public void init() {
-
-    }
 }

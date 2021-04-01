@@ -1,8 +1,6 @@
 package frontend.commands;
 
 import frontend.Bot;
-import model.Transaction;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -29,17 +27,6 @@ public abstract class Util {
         }
         else {
             return "You do not have the rights to use this role!";
-        }
-    }
-
-    public static void acceptTransaction(Message message, Transaction transaction){
-        if(transaction != null) {
-            message.addReaction("U+1F44D").queue();
-            message.addReaction("U+1F44E").queue();
-            Transaction trans = transaction;
-            transaction = null;
-            trans.message = message;
-            Bot.pendingTransactions.put(message.getId(), trans);
         }
     }
 }
