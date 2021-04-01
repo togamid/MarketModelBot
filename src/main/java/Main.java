@@ -12,7 +12,6 @@ public class Main {
     }
 
     //TODO: output things as scrollable lists
-    //TODO: Fix @everyone bug
     //TODO: introduce !search command
     //TODO: sort lists when loading?
 

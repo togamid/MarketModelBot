@@ -37,6 +37,9 @@ public class EventListeners extends ListenerAdapter {
             if(commandObj != null){
              //TODO: fix this properly
             String[] responses = commandObj.run(args, event).split("\t");
+            for(int i = 0; i < responses.length; i++){
+                responses[i] = responses[i].replace("@", "(at)");
+            }
             event.getChannel().sendMessage(mention +" "+ responses[0]).queue(m -> commandObj.callback(m));
 
                 for(int i = 1; i< responses.length; i++){
