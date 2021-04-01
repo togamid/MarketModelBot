@@ -4,8 +4,9 @@ package model;
 import frontend.Bot;
 import model.exceptions.NoStorageException;
 import model.exceptions.ProductNotAvailableException;
+import org.jetbrains.annotations.NotNull;
 
-public class Product {
+public class Product implements Comparable{
     public static final int numberProperties = 7;
     public final String name;
     public final double production; //how much is produced each day
@@ -137,5 +138,14 @@ public class Product {
         else if(currentStock <0) {
             currentStock = 0;
         }
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        if(o.getClass() == this.getClass()){
+            Product other = (Product) o;
+            return this.getName().compareTo(other.getName());
+        }
+        return 0;
     }
 }

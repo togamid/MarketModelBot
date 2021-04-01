@@ -6,6 +6,7 @@ import model.Model;
 import model.Product;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +17,14 @@ public class DataConnector {
     public DataConnector(String path){
         this.path = path;
         File directory = new File(path);
+        if(!directory.exists() && directory.isDirectory()){
+            System.out.println("[Error] The specified directory ("+ directory.getAbsolutePath() + ") does not exist!");
+            Bot.shutdown();
+        }
         this.cities = directory.list((f,s) -> (s.endsWith(".txt") ));
+        if( cities.length == 0){
+            System.out.println("[Warning] No city CSVs could be found in the directory " + directory.getAbsolutePath());
+        }
     }
     public Model loadModel(){
         List<CityMarket> cityObjects = new LinkedList<>();
@@ -51,7 +59,7 @@ public class DataConnector {
                 String name = values[0];
                 double production = Double.parseDouble(values[1].trim());
                 double consumption = Double.parseDouble(values[2].trim());
-                int maxStock = Integer.parseInt(values[3].trim());
+                int maxStock = (int) Double.parseDouble(values[3].trim());
                 double minPrice = Double.parseDouble(values[4].trim());
                 double maxPrice = Double.parseDouble(values[5].trim());
                 double currStock = Double.parseDouble(values[6].trim());
@@ -60,7 +68,10 @@ public class DataConnector {
                 line = reader.readLine();
             }
 
-            return new CityMarket(products.toArray(new Product[0]), cityName);
+            Product[] productsArray = products.toArray(new Product[0]);
+            Arrays.sort(productsArray);
+
+            return new CityMarket(productsArray, cityName);
         } catch(IOException e) {
             System.out.println("IOException");
             return null;
