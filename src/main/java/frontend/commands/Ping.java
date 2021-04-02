@@ -1,5 +1,6 @@
 package frontend.commands;
 
+import frontend.response.BasicResponse;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -7,8 +8,8 @@ public class Ping implements ICommand{
 
     private final String command = "ping";
     @Override
-    public String run(String[] args, MessageReceivedEvent event) {
-        return "pong";
+    public BasicResponse run(String[] args, MessageReceivedEvent event) {
+        return new BasicResponse( "pong");
     }
 
     @Override

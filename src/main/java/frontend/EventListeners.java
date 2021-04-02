@@ -36,7 +36,7 @@ public class EventListeners extends ListenerAdapter {
             ICommand commandObj = Bot.commands.get(command);
             if(commandObj != null){
              //TODO: fix this properly
-            String[] responses = commandObj.run(args, event).split("\t");
+            /*String[] responses = commandObj.run(args, event).split("\t");
             for(int i = 0; i < responses.length; i++){
                 responses[i] = responses[i].replace("@", "(at)");
             }
@@ -46,7 +46,8 @@ public class EventListeners extends ListenerAdapter {
                     event.getChannel().sendMessage(responses[i]).queue(m -> commandObj.callback(m));
                 }
             } else {
-                System.out.println("Warning: command " + command + " not found!");
+                System.out.println("Warning: command " + command + " not found!");*/
+                commandObj.run(args, event).send(event.getTextChannel(), mention, m-> commandObj.callback(m));
             }
         }
     }

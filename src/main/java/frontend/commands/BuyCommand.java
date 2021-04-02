@@ -1,5 +1,6 @@
 package frontend.commands;
 
+import frontend.response.BasicResponse;
 import model.Transaction;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -14,8 +15,8 @@ public class BuyCommand extends BuySellCommand {
 
 
     @Override
-    public String run(String[] args, MessageReceivedEvent event) {
-        return createTransaction(args, true);
+    public BasicResponse run(String[] args, MessageReceivedEvent event) {
+        return new BasicResponse(createTransaction(args, true));
     }
 
     @Override

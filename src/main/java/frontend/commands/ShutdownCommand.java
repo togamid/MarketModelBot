@@ -1,18 +1,19 @@
 package frontend.commands;
 
 import frontend.Bot;
+import frontend.response.BasicResponse;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ShutdownCommand implements ICommand{
     private final String commandName = "shutdown";
     @Override
-    public String run(String[] args, MessageReceivedEvent event) {
+    public BasicResponse run(String[] args, MessageReceivedEvent event) {
         String permission = Util.checkPermission(event);
         if(permission != null){
-            return permission;
+            return new BasicResponse(permission);
         }
-        return "Shutting down the bot!";
+        return new BasicResponse("Shutting down the bot!");
     }
 
     @Override

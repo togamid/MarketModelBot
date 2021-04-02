@@ -1,6 +1,7 @@
 package frontend.commands;
 
 import frontend.Bot;
+import frontend.response.BasicResponse;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -12,7 +13,7 @@ public class HelpCommand implements ICommand {
 
 
     @Override
-    public String run(String[] args, MessageReceivedEvent event) {
+    public BasicResponse run(String[] args, MessageReceivedEvent event) { //TODO: use the table for this
 
         if(args.length == 0) {
             StringBuilder builder = new StringBuilder("Verfügbare Kommandos: \n");
@@ -26,7 +27,7 @@ public class HelpCommand implements ICommand {
                 builder.append(currCommand.getShortDesc());
                 builder.append("\n");
             }
-            return builder.toString();
+            return new BasicResponse(builder.toString());
         }
         else {
             ICommand currCommand = Bot.commands.get(args[0]);
@@ -34,10 +35,10 @@ public class HelpCommand implements ICommand {
                 StringBuilder builder = new StringBuilder("**"+Bot.botSignifier+currCommand.getCommand());
                 builder.append("**: ");
                 builder.append(currCommand.getLongDesc());
-                return builder.toString();
+                return new BasicResponse( builder.toString());
             }
             else {
-                return "Command nicht gefunden. Ohne das \""+ Bot.botSignifier+ "\" eingeben";
+                return new BasicResponse( "Command nicht gefunden. Ohne das \""+ Bot.botSignifier+ "\" eingeben");
             }
         }
     }

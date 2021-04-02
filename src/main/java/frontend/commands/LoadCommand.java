@@ -1,6 +1,7 @@
 package frontend.commands;
 
 import frontend.Bot;
+import frontend.response.BasicResponse;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -8,15 +9,15 @@ public class LoadCommand implements ICommand{
     private final String command = "reload";
 
     @Override
-    public String run(String[] args, MessageReceivedEvent event) {
+    public BasicResponse run(String[] args, MessageReceivedEvent event) {
         String permission = Util.checkPermission(event);
         if(permission != null){
-            return permission;
+            return new BasicResponse(permission);
         }
 
        Bot.dataConnector.safeModel(Bot.model);
        Bot.model = Bot.dataConnector.loadModel(); //TODO: this doesn't add new cities and just updates the old ones
-        return "Successfully reloaded the data";
+        return new BasicResponse( "Successfully reloaded the data");
     }
 
     @Override

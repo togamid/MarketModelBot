@@ -1,19 +1,20 @@
 package frontend.commands;
 
 import frontend.Bot;
+import frontend.response.BasicResponse;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ReloadNoSafeCommand implements ICommand{
     private final String commandName = "reloadWithoutSaving";
     @Override
-    public String run(String[] args, MessageReceivedEvent event) {
+    public BasicResponse run(String[] args, MessageReceivedEvent event) {
         String permission = Util.checkPermission(event);
         if(permission != null){
-            return permission;
+            return new BasicResponse(permission);
         }
         Bot.model = Bot.dataConnector.loadModel();
-        return "reloaded the data";
+        return new BasicResponse( "reloaded the data");
     }
 
     @Override
