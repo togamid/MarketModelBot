@@ -3,9 +3,9 @@ package model;
 public class DndPrice {
     private final long copperAmount;
     private final int decimalPoints = 2;
-    private final int GPRatio = (int) Math.pow(10, 2+decimalPoints);
-    private final int SPRatio = (int) Math.pow(10, 1+decimalPoints);
-    private final double CPRatio = (int) Math.pow(10, decimalPoints);
+    private final int GPRatio = (int) Math.pow(10, decimalPoints);
+    private final int SPRatio = (int) Math.pow(10, decimalPoints-1);
+    private final double CPRatio = (int) Math.pow(10, decimalPoints-2);
 
     public DndPrice(double price){
         copperAmount = (int) Math.ceil(price*100);

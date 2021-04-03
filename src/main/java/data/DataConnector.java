@@ -69,7 +69,6 @@ public class DataConnector {
             }
 
             Product[] productsArray = products.toArray(new Product[0]);
-            Arrays.sort(productsArray);
 
             return new CityMarket(productsArray, cityName);
         } catch(IOException e) {

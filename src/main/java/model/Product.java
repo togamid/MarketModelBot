@@ -58,20 +58,6 @@ public class Product implements Comparable{
 
     public double getPriceAtStock(int stock){
 
-        //Model using 1/x as price curve
-       /* double tmpConsum = 0.2;
-        if(consumption != 0) {
-            tmpConsum = consumption;
-        }
-
-        double tmpProduct = 0.2;
-        if(production != 0) {
-            tmpProduct = production;
-        }
-        double xAxisStretching = (tmpProduct/tmpConsum)* 16.0/(maxStock); //if there is more production than consumption, squash the graph on the x-Axis. Use maxStock to calibrate for the expected amount
-        double yAxisStretching = priceVolatilityFactor; //scale the price increase with the priceDevelopmentFactor
-        return (yAxisStretching/(stock*xAxisStretching + 0.5)) + minPrice; */
-
         double minPrice = this.minPrice;
         double maxPrice = this.maxPrice;
         double minStock = 0;
@@ -144,7 +130,22 @@ public class Product implements Comparable{
     public int compareTo(@NotNull Object o) {
         if(o.getClass() == this.getClass()){
             Product other = (Product) o;
-            return this.getName().compareTo(other.getName());
+
+            if(this.consumption > 0 && other.consumption == 0 ){
+                return -1;
+            }
+            else if(this.consumption == 0 && other.consumption >0){
+                return 1;
+            }
+            else if(this.production > 0 && other.production == 0){
+                return -1;
+            }
+            else if(this.production == 0 && other.production >0) {
+                return 1;
+            }
+            else {
+                return this.getName().compareTo(other.getName());
+            }
         }
         return 0;
     }

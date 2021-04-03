@@ -12,6 +12,8 @@ import model.exceptions.ProductNotAvailableException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+import java.util.Arrays;
+
 public class ListCommand implements ICommand{
     public final String commandName = "list";
     private final String[] header = {"Name                    ","current stock","   max stock",
@@ -31,7 +33,9 @@ public class ListCommand implements ICommand{
             if(city == null){
                 return new BasicResponse("City " + args[0]+ " not found!");
             }
-            return new TableResponse(header, getAsStringArray(city.getAllProducts()));
+            Product[] products = city.getAllProducts();
+            Arrays.sort(products);
+            return new TableResponse(header, getAsStringArray(products));
         }
         else {
             String productname = Util.concat(args,1, " ");
