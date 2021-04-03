@@ -16,8 +16,8 @@ import java.util.Arrays;
 
 public class ListCommand implements ICommand{
     public final String commandName = "list";
-    private final String[] header = {"Name                    ","current stock","   max stock",
-            "  production", " consumption", "           buy price", "          sell price"};
+    private final String[] header = {"Name                       ","current stock","   max stock",
+             "           buy price", "          sell price"};
     @Override
     public Response run(String[] args, MessageReceivedEvent event) {
         if(args.length == 0){
@@ -55,12 +55,10 @@ public class ListCommand implements ICommand{
     private String[][] getAsStringArray(Product[] products){
         String[][] response = new String[products.length][];
         for(int i = 0; i<response.length; i++){
-            response[i] = new String[7];
+            response[i] = new String[header.length];
             response[i][0] = products[i].getName();
             response[i][1] = Integer.toString(products[i].getCurrentStock());
             response[i][2] = Integer.toString(products[i].getMaxStock());
-            response[i][3] = Double.toString(products[i].production);
-            response[i][4] = Double.toString(products[i].consumption);
             String buyPrice;
             try{
                 buyPrice = DndPrice.getPrice(products[i].getBuyPrice(1), true);
@@ -68,7 +66,7 @@ public class ListCommand implements ICommand{
             catch (ProductNotAvailableException e){
                 buyPrice = "N/A";
             }
-            response[i][5] = buyPrice;
+            response[i][3] = buyPrice;
             String sellPrice;
             try{
                 sellPrice = DndPrice.getPrice(products[i].getSellPrice(1), true);
@@ -76,49 +74,9 @@ public class ListCommand implements ICommand{
             catch (NoStorageException e){
                 sellPrice = "N/A";
             }
-            response[i][6] =  sellPrice;
+            response[i][4] =  sellPrice;
         }
         return response;
-
-
-        /*StringBuilder builder = new StringBuilder();
-        builder.append("\n```");
-        for (String header: new String[]{"Name","current stock","max stock", "production", "consumption"}) {
-            builder.append(String.format("%1$" + paddingLength + "s", header));
-        }
-        builder.append(String.format("%1$" + pricePaddingLength + "s", "buy price"));
-        builder.append(String.format("%1$" + pricePaddingLength + "s", "sell price"));
-        for (Product product : products){
-            builder.append("\n");
-            if(builder.length() - builder.lastIndexOf("\t") > 1700){
-                builder.append("```\t```");
-            }
-            builder.append(String.format("%1$" + paddingLength + "s", product.getName() + ":"));
-            builder.append(String.format("%1$" + paddingLength + "s", product.getCurrentStock()));
-            builder.append(String.format("%1$" + paddingLength + "s", product.getMaxStock()));
-            builder.append(String.format("%1$" + paddingLength + "s", product.production));
-            builder.append(String.format("%1$" + paddingLength + "s", product.consumption));
-            String buyPrice;
-            try{
-                buyPrice = DndPrice.getPrice(product.getBuyPrice(1), true);
-            }
-            catch (ProductNotAvailableException e){
-                buyPrice = "N/A";
-            }
-            builder.append(String.format("%1$" + pricePaddingLength + "s", buyPrice));
-            String sellPrice;
-            try{
-                sellPrice = DndPrice.getPrice(product.getSellPrice(1), true);
-            }
-            catch (NoStorageException e){
-                sellPrice = "N/A";
-            }
-            builder.append(String.format("%1$" + pricePaddingLength + "s", sellPrice));
-
-
-        }
-        builder.append("```");
-        return builder.toString();*/
     }
 
     @Override
