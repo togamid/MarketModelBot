@@ -29,12 +29,8 @@ public abstract class BuySellCommand implements ICommand{
         if(market == null){
             return "City " + args[0] + " not found!";
         }
-        StringBuilder productName = new StringBuilder(args[1]);
-        for(int i = 2; i< args.length-1; i++){
-            productName.append(" ");
-            productName.append(args[i]);
-        }
-        Product product = market.getProduct(productName.toString());
+        String productName = Util.concat(args, 1, " ");
+        Product product = market.getProduct(productName);
         if(product == null){
             return "Product " + args[1] + " in city " + args[0] + " not found!";
         }

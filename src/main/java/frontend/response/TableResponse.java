@@ -3,20 +3,30 @@ package frontend.response;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.time.LocalDateTime;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class TableResponse extends Response{
+
+    public static final ConcurrentHashMap<String, TableResponse> pendingTables = new ConcurrentHashMap<>();
 
     /***
      * The header of the table. Columns have the width of their header
      */
     private final String[] header;
-    private final int headerLength;
 
     private final String[][] rows;
+    private final int rowsPerMessage;
 
     private int firstRowShown;
     private int lastRowShown;
+
+    private Message message;
+    private LocalDateTime lastInteracted;
+
+    public static final String forwardReaction ="U+2B07";
+    public static final String backwardReaction ="U+2B06";
 
 
 
@@ -31,7 +41,7 @@ public class TableResponse extends Response{
         for(String col : header){
             headerLength += col.length();
         }
-        this.headerLength = headerLength;
+        this.rowsPerMessage = 1800/headerLength;
         this.header = header;
         this.rows = rows;
     }
@@ -40,20 +50,55 @@ public class TableResponse extends Response{
      *
      * @param channel the channel the response is supposed to be send in
      * @param mention the mention of the recipient
-     * @param callback the function which is supposed to be run after sending
+     * @param callbackFunction the function which is supposed to be run after sending
      * @return true if no errors occured
      */
     @Override
-    public boolean send(TextChannel channel, String mention, Consumer<Message> callback) {
+    public boolean send(TextChannel channel, String mention, Consumer<Message> callbackFunction) {
         firstRowShown = 0;
-        lastRowShown = 700/headerLength;
-        channel.sendMessage(sanitize(getPartialTable(firstRowShown, lastRowShown))).queue(callback); //TODO: implement scrolling
+        lastRowShown = rowsPerMessage-1;
+        lastInteracted = LocalDateTime.now();
+        channel.sendMessage(sanitize(getPartialTable(firstRowShown, lastRowShown))).queue(m -> callback(m, callbackFunction)); //TODO: implement scrolling
         return true;
     }
+
+    public void scrollForward(){
+        message.addReaction(backwardReaction).queue(); //TODO: fix a bug where the scroll format emote sometimes isn't removed
+        firstRowShown = lastRowShown + 1;
+        lastRowShown = lastRowShown + rowsPerMessage;
+
+        if(lastRowShown>=rows.length &&
+                message.getReactions().stream().anyMatch(reaction -> reaction.getReactionEmote().getAsCodepoints().equalsIgnoreCase(forwardReaction))) {
+            message.removeReaction(forwardReaction).queue();
+        }
+        message.editMessage(getPartialTable(firstRowShown, lastRowShown)).queue(m -> this.message = m);
+        lastInteracted = LocalDateTime.now();
+    }
+
+    public void scrollBackward(){
+        message.addReaction(forwardReaction).queue();
+        if(firstRowShown> rowsPerMessage){
+            firstRowShown -= rowsPerMessage;
+            lastRowShown -= rowsPerMessage;
+        }
+        else {
+            firstRowShown = 0;
+            lastRowShown = rowsPerMessage-1;
+            message.removeReaction(backwardReaction).queue();
+        }
+        message.editMessage(getPartialTable(firstRowShown, lastRowShown)).queue(m -> this.message = m);
+        lastInteracted = LocalDateTime.now();
+    }
+
+
 
     @Override
     public String getMessageString() {
         return getPartialTable(0, rows.length-1);
+    }
+
+    public LocalDateTime getLastInteracted(){
+        return lastInteracted;
     }
 
     private String sanitize(String text){
@@ -79,5 +124,15 @@ public class TableResponse extends Response{
         }
         builder.append("```");
         return builder.toString();
+    }
+
+    private void callback(Message m, Consumer<Message> callbackFunction){
+        if(rows.length > lastRowShown) {
+            m.addReaction("U+2B07").queue();//TODO: nur wenn nötig
+        }
+        callbackFunction.accept(m);
+        this.lastInteracted = LocalDateTime.now();
+        this.message = m;
+        pendingTables.put(m.getId(), this);
     }
 }

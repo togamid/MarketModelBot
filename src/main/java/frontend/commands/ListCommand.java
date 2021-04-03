@@ -14,10 +14,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ListCommand implements ICommand{
     public final String commandName = "list";
-    private final int paddingLength = -15;
-    private final int pricePaddingLength = -20;
-    private final String[] header = {"Name            ","   current stock","   max stock",
-            "       production", "      consumption", "              buy price", "          sell price"};
+    private final String[] header = {"Name                    ","current stock","   max stock",
+            "  production", " consumption", "           buy price", "          sell price"};
     @Override
     public Response run(String[] args, MessageReceivedEvent event) {
         if(args.length == 0){
@@ -33,14 +31,10 @@ public class ListCommand implements ICommand{
             if(city == null){
                 return new BasicResponse("City " + args[0]+ " not found!");
             }
-            //StringBuilder builder = new StringBuilder("List of all products in " + city.getName()+":");
             return new TableResponse(header, getAsStringArray(city.getAllProducts()));
         }
-        else if(args.length >= 2){
-            String productname = args[1];
-            for(int i = 2; i< args.length; i++){
-                productname += (" " +args[i]);
-            }
+        else {
+            String productname = Util.concat(args,1, " ");
             CityMarket city = Bot.model.getMarket(args[0]);
             if(city == null){
                 return new BasicResponse("City " + args[0]+ " not found!");
@@ -52,7 +46,6 @@ public class ListCommand implements ICommand{
 
             return new TableResponse(header, getAsStringArray(new Product[]{product}));
         }
-        return new BasicResponse( "Too many arguments. Usage: \"list\" or \"list <city>\"");
     }
 
     private String[][] getAsStringArray(Product[] products){
