@@ -7,8 +7,9 @@ import model.exceptions.ProductNotAvailableException;
 import org.jetbrains.annotations.NotNull;
 
 public class Product implements Comparable{
-    public static final int numberProperties = 7;
+    public static final int numberProperties = 8;
     public final String name;
+    public final String category;
     public final double production; //how much is produced each day
     public final double consumption; //how much is consumed each day
     public final double minPrice; //the minimum price possible. Is approached asymptotically
@@ -19,8 +20,9 @@ public class Product implements Comparable{
 
 
 
-    public Product(String name, double production, double consumption, int maxStock, double minPrice, double maxPrice, double currentStock){
+    public Product(String name, String category, double production, double consumption, int maxStock, double minPrice, double maxPrice, double currentStock){
         this.name = name;
+        this.category = category;
         this.production = production;
         this.consumption = consumption;
         this.maxStock = maxStock;
@@ -31,6 +33,9 @@ public class Product implements Comparable{
 
     public String getName(){
         return name;
+    }
+    public String getCategory(){
+        return category;
     }
 
     public int getCurrentStock(){

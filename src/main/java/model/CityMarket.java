@@ -25,7 +25,11 @@ public class CityMarket {
 
     //returns all Products that contain the given part of the name
     public Product[] searchProduct(String name){
-        return  products.values().stream().filter(product -> product.getName().contains(name)).toArray(Product[]::new);
+        return  products.values().stream().filter(product -> product.getName().toLowerCase().contains(name.toLowerCase())).toArray(Product[]::new);
+    }
+
+    public Product[] searchProductByCategory(String category){
+        return  products.values().stream().filter(product -> product.getName().toLowerCase().contains(category.toLowerCase())).toArray(Product[]::new);
     }
 
     public Product[] getAllProducts(){

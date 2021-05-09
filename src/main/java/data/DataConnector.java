@@ -57,13 +57,14 @@ public class DataConnector {
                 }
 
                 String name = values[0];
-                double production = Double.parseDouble(values[1].trim());
-                double consumption = Double.parseDouble(values[2].trim());
-                int maxStock = (int) Double.parseDouble(values[3].trim());
-                double minPrice = Double.parseDouble(values[4].trim());
-                double maxPrice = Double.parseDouble(values[5].trim());
-                double currStock = Double.parseDouble(values[6].trim());
-                products.add(new Product(name, production, consumption, maxStock, minPrice, maxPrice,currStock));
+                String category = values[1];
+                double production = Double.parseDouble(values[2].trim());
+                double consumption = Double.parseDouble(values[3].trim());
+                int maxStock = (int) Double.parseDouble(values[4].trim());
+                double minPrice = Double.parseDouble(values[5].trim());
+                double maxPrice = Double.parseDouble(values[6].trim());
+                double currStock = Double.parseDouble(values[7].trim());
+                products.add(new Product(name,category, production, consumption, maxStock, minPrice, maxPrice,currStock));
 
                 line = reader.readLine();
             }
