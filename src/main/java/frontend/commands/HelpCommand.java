@@ -17,7 +17,7 @@ public class HelpCommand implements ICommand {
 
         if(args.length == 0) {
             StringBuilder builder = new StringBuilder("Verfügbare Kommandos: \n");
-            ICommand[] commands =  Bot.commands.values().toArray(new ICommand[0]);
+            ICommand[] commands =  Bot.commandArray;
 
             for (int i = 0; i< commands.length; i++){
                 ICommand currCommand = commands[i];

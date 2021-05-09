@@ -1,6 +1,5 @@
 package model;
 
-
 import frontend.Bot;
 import model.exceptions.NoStorageException;
 import model.exceptions.ProductNotAvailableException;
