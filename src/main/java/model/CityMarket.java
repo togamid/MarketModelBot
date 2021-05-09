@@ -23,6 +23,11 @@ public class CityMarket {
         return products.get(name.toLowerCase(Locale.ROOT));
     }
 
+    //returns all Products that contain the given part of the name
+    public Product[] searchProduct(String name){
+        return  products.values().stream().filter(product -> product.getName().contains(name)).toArray(Product[]::new);
+    }
+
     public Product[] getAllProducts(){
         return products.values().toArray(new Product[0]);
     }

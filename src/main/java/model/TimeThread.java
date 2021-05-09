@@ -20,6 +20,6 @@ public class TimeThread{
         }
 
         BuySellCommand.pendingTransactions.entrySet().removeIf(e -> Duration.between( e.getValue().creationTime, LocalDateTime.now()).getSeconds() >60 );
-        TableResponse.pendingTables.entrySet().removeIf(e -> Duration.between(e.getValue().getLastInteracted(), LocalDateTime.now()).toMinutes() >5);
+        TableResponse.pendingTables.entrySet().removeIf(e -> Duration.between(e.getValue().getLastInteracted(), LocalDateTime.now()).toMinutes() >15);
     }
 }

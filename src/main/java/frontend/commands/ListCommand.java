@@ -16,8 +16,8 @@ import java.util.Arrays;
 
 public class ListCommand implements ICommand{
     public final String commandName = "list";
-    private final String[] header = {"Name                       ","current stock","   max stock",
-             "           buy price", "          sell price"};
+    private final String[] header = {"Name                         ","current stock","   max stock",
+             "             buy price", "            sell price"};
     @Override
     public Response run(String[] args, MessageReceivedEvent event) {
         if(args.length == 0){
@@ -43,12 +43,12 @@ public class ListCommand implements ICommand{
             if(city == null){
                 return new BasicResponse("City " + args[0]+ " not found!");
             }
-            Product product = city.getProduct(productname);
-            if(product == null){
-                return new BasicResponse("Product " + args[1] + " in city "+ args[0]+ " not found!");
+            Product[] product = city.searchProduct(productname);
+            if(product.length == 0){
+                return new BasicResponse("Product " + productname + " in city "+ args[0]+ " not found!");
             }
 
-            return new TableResponse(header, getAsStringArray(new Product[]{product}));
+            return new TableResponse(header, getAsStringArray(product));
         }
     }
 

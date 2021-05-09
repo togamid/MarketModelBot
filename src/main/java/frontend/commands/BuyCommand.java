@@ -1,17 +1,12 @@
 package frontend.commands;
 
 import frontend.response.BasicResponse;
-import model.Transaction;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-import java.util.LinkedList;
-import java.util.Queue;
 
 
 public class BuyCommand extends BuySellCommand {
     private final String command = "buy";
-    private final Queue<Transaction> transaction = new LinkedList<>();
-
 
 
     @Override
