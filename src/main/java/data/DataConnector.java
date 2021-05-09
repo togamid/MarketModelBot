@@ -95,6 +95,8 @@ public class DataConnector {
             builder.append("\n");
             builder.append(product.name);
             builder.append(";");
+            builder.append(product.category);
+            builder.append(";");
             builder.append(product.production);
             builder.append(";");
             builder.append(product.consumption);
