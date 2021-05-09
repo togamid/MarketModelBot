@@ -17,35 +17,40 @@ public class ListCommand implements ICommand{
              "             buy price", "            sell price"};
     @Override
     public Response run(String[] args, MessageReceivedEvent event) {
-        if(args.length == 0){
-            StringBuilder builder = new StringBuilder("List of all cities. Use !list <city> to see more information.");
-            for (CityMarket market : Bot.model.getAllMarkets()){
-                builder.append("\n");
-                builder.append( market.getName());
-            }
-            return new BasicResponse(builder.toString());
+        if(args.length <= 1){
+            return new BasicResponse("Usage: !list [-p/-c] <city> [name]. For a list of cities, please use !listCities");
         }
-        else if(args.length == 1){
-            CityMarket city = Bot.model.getMarket(args[0]);
+
+        boolean listCategories = args[0].equalsIgnoreCase("-c");
+        String cityName = args[1];
+
+        if(args.length == 2){
+            CityMarket city = Bot.model.getMarket(cityName);
             if(city == null){
-                return new BasicResponse("City " + args[0]+ " not found!");
+                return new BasicResponse("City " + cityName+ " not found!");
             }
             Product[] products = city.getAllProducts();
             Arrays.sort(products);
             return new TableResponse(header, getAsStringArray(products));
         }
         else {
-            String productname = Util.concat(args,1, " ");
-            CityMarket city = Bot.model.getMarket(args[0]);
+            String productname = Util.concat(args,2, " ");
+            CityMarket city = Bot.model.getMarket(cityName);
             if(city == null){
-                return new BasicResponse("City " + args[0]+ " not found!");
+                return new BasicResponse("City " + cityName+ " not found!");
             }
-            Product[] product = city.searchProduct(productname);
-            if(product.length == 0){
-                return new BasicResponse("Product " + productname + " in city "+ args[0]+ " not found!");
+            Product[] products;
+            if(!listCategories) {
+                products = city.searchProduct(productname);
+            }
+            else {
+                products = city.searchProductByCategory(productname);
+            }
+            if(products.length == 0){
+                return new BasicResponse( "Product " + productname + " in city "+ cityName+ " not found!");
             }
 
-            return new TableResponse(header, getAsStringArray(product));
+            return new TableResponse(header, getAsStringArray(products));
         }
     }
 
@@ -62,12 +67,12 @@ public class ListCommand implements ICommand{
 
     @Override
     public String getShortDesc() {
-        return "Lists all cities. Lists all products of a city with \"list <city>\"";
+        return  "Usage: !list [-p/-c] <city> [name] Lists products in a city. Use -c to search for categories, -p for product name.";
     }
 
     @Override
     public String getLongDesc() {
-        return null;
+        return getShortDesc();
     }
 
     @Override

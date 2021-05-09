@@ -29,7 +29,7 @@ public class CityMarket {
     }
 
     public Product[] searchProductByCategory(String category){
-        return  products.values().stream().filter(product -> product.getName().toLowerCase().contains(category.toLowerCase())).toArray(Product[]::new);
+        return  products.values().stream().filter(product -> product.getCategory().toLowerCase().contains(category.toLowerCase())).toArray(Product[]::new);
     }
 
     public Product[] getAllProducts(){

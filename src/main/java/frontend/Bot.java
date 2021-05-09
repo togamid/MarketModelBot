@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class Bot {
     public static JDA jda;
     public static HashMap<String, ICommand> commands = new HashMap<>();
-    private static final ICommand[] commandArray = {new Ping(),new ListCommand(), new CompareCommand(), new BuyCommand(), new SellCommand(), new SafeCommand(),
+    private static final ICommand[] commandArray = {new Ping(), new ListCitiesCommand(), new ListCommand(), new CompareCommand(), new BuyCommand(), new SellCommand(), new SafeCommand(),
             new LoadCommand(), new ReloadNoSafeCommand(), new ShutdownCommand(), new HelpCommand()};
     public static Model model;
     public static DataConnector dataConnector;
