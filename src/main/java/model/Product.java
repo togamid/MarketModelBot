@@ -115,6 +115,30 @@ public class Product implements Comparable{
         return name;
     }
 
+    public String[] getInfoAsStringArray() {
+        String[] response = new String[5];
+        response[0] = this.name;
+        response[1] = Integer.toString(this.getCurrentStock());
+        response[2] = Integer.toString(this.getMaxStock());
+        String buyPrice;
+        try{
+            buyPrice = DndPrice.getPrice(this.getBuyPrice(1), true);
+        }
+        catch (ProductNotAvailableException e){
+            buyPrice = "N/A";
+        }
+        response[3] = buyPrice;
+        String sellPrice;
+        try{
+            sellPrice = DndPrice.getPrice(this.getSellPrice(1), true);
+        }
+        catch (NoStorageException e){
+            sellPrice = "N/A";
+        }
+        response[4] =  sellPrice;
+        return response;
+    }
+
     public void advanceDay(){
         currentStock += production;
         currentStock -= consumption;

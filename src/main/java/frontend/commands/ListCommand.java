@@ -5,10 +5,7 @@ import frontend.response.BasicResponse;
 import frontend.response.Response;
 import frontend.response.TableResponse;
 import model.CityMarket;
-import model.DndPrice;
 import model.Product;
-import model.exceptions.NoStorageException;
-import model.exceptions.ProductNotAvailableException;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -55,26 +52,10 @@ public class ListCommand implements ICommand{
     private String[][] getAsStringArray(Product[] products){
         String[][] response = new String[products.length][];
         for(int i = 0; i<response.length; i++){
-            response[i] = new String[header.length];
-            response[i][0] = products[i].getName();
-            response[i][1] = Integer.toString(products[i].getCurrentStock());
-            response[i][2] = Integer.toString(products[i].getMaxStock());
-            String buyPrice;
-            try{
-                buyPrice = DndPrice.getPrice(products[i].getBuyPrice(1), true);
+            response[i] = products[i].getInfoAsStringArray();
+            if(header.length != response[i].length){
+                throw new RuntimeException("The header of the list is invalid!");
             }
-            catch (ProductNotAvailableException e){
-                buyPrice = "N/A";
-            }
-            response[i][3] = buyPrice;
-            String sellPrice;
-            try{
-                sellPrice = DndPrice.getPrice(products[i].getSellPrice(1), true);
-            }
-            catch (NoStorageException e){
-                sellPrice = "N/A";
-            }
-            response[i][4] =  sellPrice;
         }
         return response;
     }
