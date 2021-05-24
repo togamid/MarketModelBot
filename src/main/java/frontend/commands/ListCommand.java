@@ -15,13 +15,22 @@ public class ListCommand implements ICommand{
     public final String commandName = "list";
     private final String[] header = {"Name                         ","current stock","   max stock",
              "             buy price", "            sell price"};
+    private final String categoryIdentifier = "cat";
     @Override
     public Response run(String[] args, MessageReceivedEvent event) {
         if(args.length <= 1){
-            return new BasicResponse("Usage: !list [-p/-c] <city> [name]. For a list of cities, please use !listCities");
+            return new BasicResponse("Usage: !list [prod/cat] <city> [name]. For a list of cities, please use !listCities");
         }
 
-        boolean listCategories = args[0].equalsIgnoreCase("-c");
+        boolean listCategories = args[0].equalsIgnoreCase(categoryIdentifier);
+        return list(listCategories, args, event);
+    }
+
+    protected Response list(boolean byCategory, String[] args, MessageReceivedEvent event){
+        if(args.length <= 1){
+            return new BasicResponse("Usage: !list [prod/cat] <city> [name]. For a list of cities, please use !listCities");
+        }
+
         String cityName = args[1];
 
         if(args.length == 2){
@@ -40,7 +49,7 @@ public class ListCommand implements ICommand{
                 return new BasicResponse("City " + cityName+ " not found!");
             }
             Product[] products;
-            if(!listCategories) {
+            if(!byCategory) {
                 products = city.searchProduct(productname);
             }
             else {
@@ -67,7 +76,7 @@ public class ListCommand implements ICommand{
 
     @Override
     public String getShortDesc() {
-        return  "Usage: !list [-p/-c] <city> [name] Lists products in a city. Use -c to search for categories, -p for product name.";
+        return  "Usage: !list [prod/cat] <city> [name] Lists products in a city. Use cat to search for categories, prod for product name.";
     }
 
     @Override

@@ -7,8 +7,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class HelpCommand implements ICommand {
 
-    String longDesc = "Zeigt diese Nachricht. !help <command> für weitere Informationen";
-    String shortDesc = "Zeigt diese Nachricht. !help <command> für weitere Informationen";
+    String shortDesc = "Shows this message. !help <command> for more information";
+    String longDesc = shortDesc;
     String command = "help";
 
 
@@ -16,7 +16,7 @@ public class HelpCommand implements ICommand {
     public BasicResponse run(String[] args, MessageReceivedEvent event) { //TODO: use the table for this
 
         if(args.length == 0) {
-            StringBuilder builder = new StringBuilder("Verfügbare Kommandos: \n");
+            StringBuilder builder = new StringBuilder("Available commands: \n");
             ICommand[] commands =  Bot.commandArray;
 
             for (int i = 0; i< commands.length; i++){
@@ -32,13 +32,11 @@ public class HelpCommand implements ICommand {
         else {
             ICommand currCommand = Bot.commands.get(args[0]);
             if(currCommand != null) {
-                StringBuilder builder = new StringBuilder("**"+Bot.botSignifier+currCommand.getCommand());
-                builder.append("**: ");
-                builder.append(currCommand.getLongDesc());
-                return new BasicResponse( builder.toString());
+                String builder = "**" + Bot.botSignifier + currCommand.getCommand() + "**: " + currCommand.getLongDesc();
+                return new BasicResponse(builder);
             }
             else {
-                return new BasicResponse( "Command nicht gefunden. Ohne das \""+ Bot.botSignifier+ "\" eingeben");
+                return new BasicResponse( "Command found. Please enter it without the \""+ Bot.botSignifier+ "\".");
             }
         }
     }
