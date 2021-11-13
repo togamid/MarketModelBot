@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class ReloadNoSafeCommand implements ICommand{
-    private final String commandName = "reloadWithoutSaving";
+    private final String commandName = "reload";
     @Override
     public BasicResponse run(String[] args, MessageReceivedEvent event) {
         String permission = Util.checkPermission(event);

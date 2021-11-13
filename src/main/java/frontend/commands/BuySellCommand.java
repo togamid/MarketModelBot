@@ -29,10 +29,10 @@ public abstract class BuySellCommand implements ICommand{
         if(market == null){
             return "City " + args[0] + " not found!";
         }
-        String productName = Util.concat(args, 1, " ");
+        String productName = Util.concat(args, 1,args.length -2, " ");
         Product product = market.getProduct(productName);
         if(product == null){
-            return "Product " + args[1] + " in city " + args[0] + " not found!";
+            return "Product " + productName + " in city " + args[0] + " not found!";
         }
 
         try{
@@ -73,7 +73,10 @@ public abstract class BuySellCommand implements ICommand{
 
     @Override
     public void callback(Message message){
-        Transaction trans = transaction.remove();
+        Transaction trans = null;
+        if(!transaction.isEmpty()){
+            trans = transaction.remove();
+        }
         if(trans != null) {
             message.addReaction("U+1F44D").queue();
             message.addReaction("U+1F44E").queue();

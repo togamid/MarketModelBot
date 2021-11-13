@@ -15,6 +15,7 @@ public class Product implements Comparable{
     public final double maxPrice; //the maximum price
     private double currentStock;
     private final int maxStock; //the maximum amount the city can store of this good. Also used to scale the price-development to the expected quantity
+    private final int productionConsumptionModifier;
 
 
 
@@ -28,6 +29,7 @@ public class Product implements Comparable{
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.currentStock = currentStock;
+        this.productionConsumptionModifier = Integer.parseInt(Bot.config.get("ProductionConsumptionMultiplier"));
     }
 
     public String getName(){
@@ -88,7 +90,6 @@ public class Product implements Comparable{
             throw new NumberFormatException("Amount to buy may not be negative!");
         }
         if(currentStock - amount < 0){
-            System.out.println("Error: Not enough available!");
             throw new ProductNotAvailableException("Not enough available to complete transaction!");
         }
         for(int i = 0; i<amount; i++){
@@ -104,7 +105,6 @@ public class Product implements Comparable{
             throw new NumberFormatException("Amount to buy may not be negative!");
         }
         if(currentStock + amount > maxStock){
-            System.out.println("Error: Not enough available!");
             throw new NoStorageException("The city does not have enough storage to complete the transaction!");
         }
 
@@ -144,8 +144,8 @@ public class Product implements Comparable{
     }
 
     public void advanceDay(){
-        currentStock += production;
-        currentStock -= consumption;
+        currentStock += production * productionConsumptionModifier;
+        currentStock -= consumption * productionConsumptionModifier;
         if(currentStock > maxStock){
             currentStock = maxStock;
         }

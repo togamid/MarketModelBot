@@ -9,7 +9,6 @@ public class ListProdNameCommand extends ListCommand implements ICommand{
         return list(false, args, event);
     }
 
-
     @Override
     public String getCommand() {
         return "listProdName";

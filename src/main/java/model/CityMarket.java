@@ -20,7 +20,8 @@ public class CityMarket {
 
 
     public Product getProduct(String name){
-        return products.get(name.toLowerCase(Locale.ROOT));
+        return products.getOrDefault(name.toLowerCase(Locale.ROOT), null);
+
     }
 
     //returns all Products that contain the given part of the name

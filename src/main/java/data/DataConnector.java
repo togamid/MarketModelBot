@@ -6,7 +6,6 @@ import model.Model;
 import model.Product;
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,7 +28,13 @@ public class DataConnector {
     public Model loadModel(){
         List<CityMarket> cityObjects = new LinkedList<>();
         for(String city : cities){
-           cityObjects.add(loadCityMarket(path + File.separator + city, city.substring(0,city.indexOf(".")), true));
+            CityMarket market = loadCityMarket(path + File.separator + city, city.substring(0,city.indexOf(".")), true);
+            if(market != null){
+                cityObjects.add(market);
+            } else {
+                System.out.println("An error occured with the market "+ city+". Skipped it!");
+            }
+
         }
         return new Model(cityObjects.toArray(new CityMarket[0]));
     }

@@ -24,8 +24,9 @@ public class Config {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("The config file could not be loaded. Did your remember to create it?");
+            System.out.println("The config file could not be loaded. Did your remember to create it? It should be in the same Directory as the .jar file.");
             e.printStackTrace();
+            throw new RuntimeException();
         }
     }
     public String get(String key){

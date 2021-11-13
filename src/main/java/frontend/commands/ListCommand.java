@@ -19,21 +19,22 @@ public class ListCommand implements ICommand{
     @Override
     public Response run(String[] args, MessageReceivedEvent event) {
         if(args.length <= 1){
-            return new BasicResponse("Usage: !list [prod/cat] <city> [name]. For a list of cities, please use !listCities");
+            return new BasicResponse("!list: Usage: !list [prod or cat] <city> [prod/cat name] Lists products in a city. Use cat to search for categories, prod for product name. For a list of cities, please use !listCities");
         }
 
         boolean listCategories = args[0].equalsIgnoreCase(categoryIdentifier);
-        return list(listCategories, args, event);
+        String[] remainingArgs = Arrays.copyOfRange(args, 1, args.length);
+        return list(listCategories, remainingArgs, event);
     }
 
     protected Response list(boolean byCategory, String[] args, MessageReceivedEvent event){
-        if(args.length <= 1){
+        if(args.length < 1){
             return new BasicResponse("Usage: !list [prod/cat] <city> [name]. For a list of cities, please use !listCities");
         }
 
-        String cityName = args[1];
+        String cityName = args[0];
 
-        if(args.length == 2){
+        if(args.length == 1){
             CityMarket city = Bot.model.getMarket(cityName);
             if(city == null){
                 return new BasicResponse("City " + cityName+ " not found!");
@@ -43,7 +44,7 @@ public class ListCommand implements ICommand{
             return new TableResponse(header, getAsStringArray(products));
         }
         else {
-            String productname = Util.concat(args,2, " ");
+            String productname = Util.concat(args,1, " ");
             CityMarket city = Bot.model.getMarket(cityName);
             if(city == null){
                 return new BasicResponse("City " + cityName+ " not found!");

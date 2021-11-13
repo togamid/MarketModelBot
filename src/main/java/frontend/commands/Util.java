@@ -31,10 +31,16 @@ public abstract class Util {
     }
 
     public static String concat(String[] array, int beginIndex, String separator){
-        if(beginIndex >= array.length)
+        return concat(array, beginIndex, array.length -1, separator);
+    }
+    public static String concat(String[] array, int beginIndex, int endIndex, String separator){
+        if(endIndex >= array.length){
+            endIndex = array.length -1;
+        }
+        if(beginIndex > endIndex)
             return "";
         StringBuilder builder = new StringBuilder(array[beginIndex]);
-        for(int i = beginIndex+1; i<array.length; i++){
+        for(int i = beginIndex+1; i<=endIndex; i++){
             builder.append(separator);
             builder.append(array[i]);
         }
