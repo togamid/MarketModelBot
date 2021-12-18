@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class HelpCommand implements ICommand {
 
-    String shortDesc = "Shows this message. !help <command> for more information";
+    String shortDesc = "Shows this message. "+Bot.botSignifier +"help <command> for more information";
     String longDesc = shortDesc;
     String command = "help";
 

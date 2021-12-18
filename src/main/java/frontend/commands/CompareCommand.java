@@ -36,7 +36,7 @@ public class CompareCommand implements ICommand {
 
     @Override
     public String getShortDesc() {
-        return "Usage: !compare <product name>. Returns information on the selected product in all cities where it is available";
+        return "Usage: compare <product name>. Returns information on the selected product in all cities where it is available";
     }
 
     @Override

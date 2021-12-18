@@ -23,7 +23,7 @@ public class ListCitiesCommand implements ICommand{
 
     @Override
     public String getShortDesc() {
-        return "Usage: !listCities . Lists all available cities";
+        return "Usage: listCities . Lists all available cities";
     }
 
     @Override

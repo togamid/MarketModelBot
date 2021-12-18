@@ -16,12 +16,12 @@ public class ListProdNameCommand extends ListCommand implements ICommand{
 
     @Override
     public String getShortDesc() {
-        return  "Usage: !listProdName <city> <product_name> lists products in a city. Partial names are allowed.";
+        return  "Usage: listProdName <city> <product_name> lists products in a city. Partial names are allowed.";
     }
 
     @Override
     public String getLongDesc() {
-        return getShortDesc() + " This is long form for !list prod <city> <name>";
+        return getShortDesc() + " This is long form for list prod <city> <name>";
     }
 
 

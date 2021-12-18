@@ -18,12 +18,12 @@ public class ShutdownCommand implements ICommand{
 
     @Override
     public String getShortDesc() {
-        return null;
+        return "Shuts down the bot";
     }
 
     @Override
     public String getLongDesc() {
-        return null;
+        return "Shuts down the bot";
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ListCommand implements ICommand{
 
     protected Response list(boolean byCategory, String[] args, MessageReceivedEvent event){
         if(args.length < 1){
-            return new BasicResponse("Usage: !list [prod/cat] <city> [name]. For a list of cities, please use !listCities");
+            return new BasicResponse("Usage: list [prod/cat] <city> [name]. For a list of cities, please use listCities");
         }
 
         String cityName = args[0];
