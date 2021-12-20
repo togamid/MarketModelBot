@@ -37,27 +37,24 @@ public abstract class BuySellCommand implements ICommand{
 
         try{
             amount = Integer.parseInt(args[args.length-1]);
-            if(isBuy){
-                amount *= -1;
-            }
         } catch (NumberFormatException e){
             return "The amount has to be a positive Integer!";
         }
 
         String result = "";
 
-        if(product.getCurrentStock() + amount > product.getMaxStock() ){
+        if(!isBuy && product.getCurrentStock() + amount > product.getMaxStock() ){
             amount = product.getMaxStock() - product.getCurrentStock();
             result += ("**Only space for " + amount + " available!** ");
         }
-        if(product.getCurrentStock() < amount){
+        if(isBuy && product.getCurrentStock() < amount){
             amount = product.getCurrentStock();
             result += ("**Only " + amount + " available!**");
         }
 
         try{
             if(isBuy){
-                price = product.getBuyPrice(amount*(-1)); //TODO: unify getBuyPrice and getSellPrice
+                price = product.getBuyPrice(amount); //TODO: unify getBuyPrice and getSellPrice
             } else {
                 price = product.getSellPrice(amount);
             }
@@ -67,8 +64,8 @@ public abstract class BuySellCommand implements ICommand{
             return e.getMessage();
         }
 
-        transaction.add(new Transaction(market, product, amount));
-        return result + "Do you really want to "+ (isBuy?"buy ":"sell ") + (isBuy?amount*-1:amount) + " " + product.getName() + " for "+ DndPrice.getPrice(price, false) +" in "+ market.getName() + "?";
+        transaction.add(new Transaction(market, product, (isBuy?amount*-1:amount)));
+        return result + "Do you really want to "+ (isBuy?"buy ":"sell ") + amount + " " + product.getName() + " for "+ DndPrice.getPrice(price, false) +" in "+ market.getName() + "?";
     }
 
     @Override
