@@ -19,7 +19,7 @@ public class ListCommand implements ICommand{
     @Override
     public Response run(String[] args, MessageReceivedEvent event) {
         if(args.length <= 1){
-            return new BasicResponse("!list: Usage: !list [prod or cat] <city> [prod/cat name] Lists products in a city. Use cat to search for categories, prod for product name. For a list of cities, please use !listCities");
+            return new BasicResponse("list: Usage: list [prod or cat] <city> [prod/cat name] Lists products in a city. Use cat to search for categories, prod for product name. For a list of cities, please use listCities");
         }
 
         boolean listCategories = args[0].equalsIgnoreCase(categoryIdentifier);

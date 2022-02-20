@@ -8,10 +8,10 @@ public class Transaction {
     public final LocalDateTime creationTime;
     public final CityMarket city;
     public final Product product;
-    public final int amount;
+    public final long amount;
     public Message message;
 
-    public Transaction(CityMarket city, Product product, int amount){
+    public Transaction(CityMarket city, Product product, long amount){
         this.city = city;
         this.product = product;
         this.amount = amount;

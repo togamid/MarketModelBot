@@ -20,7 +20,7 @@ public abstract class BuySellCommand implements ICommand{
     }
 
     public String createTransaction(String[] args, boolean isBuy) {
-        int amount;
+        long amount;
         double price;
         if(args.length < 3){
             return "Too few arguments. Usage: " + (isBuy?"buy":"sell")+ " <city> <product> <amount>";
