@@ -1,5 +1,8 @@
 package model;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class DndPrice {
     private final long copperAmount;
     private final int decimalPoints = 2;
@@ -23,7 +26,7 @@ public class DndPrice {
         if(!fractional){
             cp = Math.ceil(cp);
         }
-        return ""+gp+" GP "+sp+" SP "+cp+" CP";
+        return ""+ NumberFormat.getInstance(Locale.US).format( gp)+" GP "+sp+" SP "+cp+" CP";
     }
 
     public String toString(){

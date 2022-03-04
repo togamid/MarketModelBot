@@ -5,6 +5,9 @@ import model.exceptions.NoStorageException;
 import model.exceptions.ProductNotAvailableException;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Product implements Comparable<Product>{
     public static final int numberProperties = 8;
     public final String name;
@@ -122,8 +125,8 @@ public class Product implements Comparable<Product>{
     public String[] getInfoAsStringArray() {
         String[] response = new String[5];
         response[0] = this.name;
-        response[1] = Long.toString(this.getCurrentStock());
-        response[2] = Long.toString(this.getMaxStock());
+        response[1] = NumberFormat.getInstance(Locale.US).format(this.getCurrentStock());
+        response[2] = NumberFormat.getInstance(Locale.US).format(this.getMaxStock());
         String buyPrice;
         try{
             buyPrice = DndPrice.getPrice(this.getBuyPrice(1), true);
