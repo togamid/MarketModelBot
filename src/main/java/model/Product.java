@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Random;
 
 public class Product implements Comparable<Product>{
     public static final int numberProperties = 8;
@@ -146,7 +147,7 @@ public class Product implements Comparable<Product>{
         return response;
     }
 
-    public void advanceDay(){
+    public void advanceDayCalculated(){
         currentStock += production * productionConsumptionModifier;
         currentStock -= consumption * productionConsumptionModifier;
         if(currentStock > maxStock){
@@ -156,6 +157,13 @@ public class Product implements Comparable<Product>{
             currentStock = 0;
         }
     }
+
+    public void advanceDay() {
+        Random rand = new Random();
+        currentStock = (long) (rand.nextDouble()*maxStock);
+    }
+
+
 
     @Override
     public int compareTo(@NotNull Product other) {
